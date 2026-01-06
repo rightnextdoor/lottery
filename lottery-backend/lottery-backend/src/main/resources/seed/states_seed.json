@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-01-06T18:17:30Z",
+  "jurisdictions": [
+    {
+      "code": "AL",
+      "name": "Alabama",
+      "enabled": true
+    },
+    {
+      "code": "AK",
+      "name": "Alaska",
+      "enabled": true
+    },
+    {
+      "code": "AZ",
+      "name": "Arizona",
+      "enabled": true
+    },
+    {
+      "code": "AR",
+      "name": "Arkansas",
+      "enabled": true
+    },
+    {
+      "code": "CA",
+      "name": "California",
+      "enabled": true
+    },
+    {
+      "code": "CO",
+      "name": "Colorado",
+      "enabled": true
+    },
+    {
+      "code": "CT",
+      "name": "Connecticut",
+      "enabled": true
+    },
+    {
+      "code": "DE",
+      "name": "Delaware",
+      "enabled": true
+    },
+    {
+      "code": "FL",
+      "name": "Florida",
+      "enabled": true
+    },
+    {
+      "code": "GA",
+      "name": "Georgia",
+      "enabled": true
+    },
+    {
+      "code": "HI",
+      "name": "Hawaii",
+      "enabled": true
+    },
+    {
+      "code": "ID",
+      "name": "Idaho",
+      "enabled": true
+    },
+    {
+      "code": "IL",
+      "name": "Illinois",
+      "enabled": true
+    },
+    {
+      "code": "IN",
+      "name": "Indiana",
+      "enabled": true
+    },
+    {
+      "code": "IA",
+      "name": "Iowa",
+      "enabled": true
+    },
+    {
+      "code": "KS",
+      "name": "Kansas",
+      "enabled": true
+    },
+    {
+      "code": "KY",
+      "name": "Kentucky",
+      "enabled": true
+    },
+    {
+      "code": "LA",
+      "name": "Louisiana",
+      "enabled": true
+    },
+    {
+      "code": "ME",
+      "name": "Maine",
+      "enabled": true
+    },
+    {
+      "code": "MD",
+      "name": "Maryland",
+      "enabled": true
+    },
+    {
+      "code": "MA",
+      "name": "Massachusetts",
+      "enabled": true
+    },
+    {
+      "code": "MI",
+      "name": "Michigan",
+      "enabled": true
+    },
+    {
+      "code": "MN",
+      "name": "Minnesota",
+      "enabled": true
+    },
+    {
+      "code": "MS",
+      "name": "Mississippi",
+      "enabled": true
+    },
+    {
+      "code": "MO",
+      "name": "Missouri",
+      "enabled": true
+    },
+    {
+      "code": "MT",
+      "name": "Montana",
+      "enabled": true
+    },
+    {
+      "code": "NE",
+      "name": "Nebraska",
+      "enabled": true
+    },
+    {
+      "code": "NV",
+      "name": "Nevada",
+      "enabled": true
+    },
+    {
+      "code": "NH",
+      "name": "New Hampshire",
+      "enabled": true
+    },
+    {
+      "code": "NJ",
+      "name": "New Jersey",
+      "enabled": true
+    },
+    {
+      "code": "NM",
+      "name": "New Mexico",
+      "enabled": true
+    },
+    {
+      "code": "NY",
+      "name": "New York",
+      "enabled": true
+    },
+    {
+      "code": "NC",
+      "name": "North Carolina",
+      "enabled": true
+    },
+    {
+      "code": "ND",
+      "name": "North Dakota",
+      "enabled": true
+    },
+    {
+      "code": "OH",
+      "name": "Ohio",
+      "enabled": true
+    },
+    {
+      "code": "OK",
+      "name": "Oklahoma",
+      "enabled": true
+    },
+    {
+      "code": "OR",
+      "name": "Oregon",
+      "enabled": true
+    },
+    {
+      "code": "PA",
+      "name": "Pennsylvania",
+      "enabled": true
+    },
+    {
+      "code": "RI",
+      "name": "Rhode Island",
+      "enabled": true
+    },
+    {
+      "code": "SC",
+      "name": "South Carolina",
+      "enabled": true
+    },
+    {
+      "code": "SD",
+      "name": "South Dakota",
+      "enabled": true
+    },
+    {
+      "code": "TN",
+      "name": "Tennessee",
+      "enabled": true
+    },
+    {
+      "code": "TX",
+      "name": "Texas",
+      "enabled": true
+    },
+    {
+      "code": "UT",
+      "name": "Utah",
+      "enabled": true
+    },
+    {
+      "code": "VT",
+      "name": "Vermont",
+      "enabled": true
+    },
+    {
+      "code": "VA",
+      "name": "Virginia",
+      "enabled": true
+    },
+    {
+      "code": "WA",
+      "name": "Washington",
+      "enabled": true
+    },
+    {
+      "code": "WV",
+      "name": "West Virginia",
+      "enabled": true
+    },
+    {
+      "code": "WI",
+      "name": "Wisconsin",
+      "enabled": true
+    },
+    {
+      "code": "WY",
+      "name": "Wyoming",
+      "enabled": true
+    },
+    {
+      "code": "DC",
+      "name": "District of Columbia",
+      "enabled": true
+    },
+    {
+      "code": "PR",
+      "name": "Puerto Rico",
+      "enabled": true
+    },
+    {
+      "code": "VI",
+      "name": "U.S. Virgin Islands",
+      "enabled": true
+    }
+  ]
+}

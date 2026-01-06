@@ -1,0 +1,4334 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-01-06T18:33:09Z",
+  "gameModes": [
+    {
+      "modeKey": "POWERBALL",
+      "displayName": "Powerball",
+      "scope": "MULTI_STATE",
+      "jurisdictionCode": null,
+      "drawDays": [
+        "MONDAY",
+        "WEDNESDAY",
+        "SATURDAY"
+      ],
+      "rules": {
+        "formatStartDate": "2015-10-04",
+        "whiteMin": 1,
+        "whiteMax": 69,
+        "whitePickCount": 5,
+        "redMin": 1,
+        "redMax": 26,
+        "redPickCount": 1
+      }
+    },
+    {
+      "modeKey": "MEGA_MILLIONS",
+      "displayName": "Mega Millions",
+      "scope": "MULTI_STATE",
+      "jurisdictionCode": null,
+      "drawDays": [
+        "TUESDAY",
+        "FRIDAY"
+      ],
+      "rules": {
+        "formatStartDate": "2025-04-08",
+        "whiteMin": 1,
+        "whiteMax": 70,
+        "whitePickCount": 5,
+        "redMin": 1,
+        "redMax": 24,
+        "redPickCount": 1
+      }
+    },
+    {
+      "jurisdictionCode": "AZ",
+      "stateOnlyGames": [
+        {
+          "modeKey": "AZ_THE_PICK",
+          "displayName": "The Pick",
+          "scope": "STATE_ONLY",
+          "jurisdictionCode": "AZ",
+          "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+          "rules": {
+            "formatStartDate": null,
+            "whiteMin": 1,
+            "whiteMax": 44,
+            "whitePickCount": 6,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": 0
+          }
+        },
+        {
+          "modeKey": "AZ_TRIPLE_TWIST",
+          "displayName": "Triple Twist",
+          "scope": "STATE_ONLY",
+          "jurisdictionCode": "AZ",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "formatStartDate": null,
+            "whiteMin": 1,
+            "whiteMax": 42,
+            "whitePickCount": 6,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": 0
+          }
+        },
+        {
+          "modeKey": "AZ_FANTASY_5",
+          "displayName": "Fantasy 5",
+          "scope": "STATE_ONLY",
+          "jurisdictionCode": "AZ",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "formatStartDate": null,
+            "whiteMin": 1,
+            "whiteMax": 41,
+            "whitePickCount": 5,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": 0
+          }
+        },
+        {
+          "modeKey": "AZ_PICK_3",
+          "displayName": "Pick 3",
+          "scope": "STATE_ONLY",
+          "jurisdictionCode": "AZ",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "formatStartDate": null,
+            "whiteMin": 0,
+            "whiteMax": 9,
+            "whitePickCount": 3,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "modeKey": "AR_LOTTO",
+      "displayName": "LOTTO",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "AR",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 40,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "AR_NATURAL_STATE_JACKPOT",
+      "displayName": "Natural State Jackpot",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "AR",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "AR_CASH_3",
+      "displayName": "Cash 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "AR",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "AR_CASH_4",
+      "displayName": "Cash 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "AR",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CA_SUPERLOTTO_PLUS",
+      "displayName": "SuperLotto Plus",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CA",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 47,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 27,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CA_FANTASY_5",
+      "displayName": "Fantasy 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CA_DAILY_3",
+      "displayName": "Daily 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CA_DAILY_4",
+      "displayName": "Daily 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CO_COLORADO_LOTTO_PLUS",
+      "displayName": "Colorado Lotto+",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CO",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 40,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CO_CASH_5",
+      "displayName": "Cash 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CO",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 32,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CO_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CO",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CT_LOTTO",
+      "displayName": "Lotto!",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CT",
+      "drawDays": ["TUESDAY", "FRIDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 44,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CT_CASH5",
+      "displayName": "Cash 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CT",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 35,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CT_PLAY3",
+      "displayName": "Play 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CT",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "CT_PLAY4",
+      "displayName": "Play 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "CT",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "DE_MULTI_WIN_LOTTO",
+      "displayName": "Multi-Win Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "DE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 35,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "DE_PLAY_3",
+      "displayName": "Play 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "DE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "DE_PLAY_4",
+      "displayName": "Play 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "DE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "DE_PLAY_5",
+      "displayName": "Play 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "DE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 5,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_FLORIDA_LOTTO",
+      "displayName": "Florida Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 53,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_FANTASY_5",
+      "displayName": "Fantasy 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 36,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_JACKPOT_TRIPLE_PLAY",
+      "displayName": "Jackpot Triple Play",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["TUESDAY", "FRIDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 46,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_PICK_2",
+      "displayName": "Pick 2",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 2,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_PICK_5",
+      "displayName": "Pick 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 5,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "FL_CASH_POP",
+      "displayName": "Cash Pop",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "FL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "GA_FANTASY_5",
+      "displayName": "Fantasy 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "GA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 42,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "GA_CASH_3",
+      "displayName": "Cash 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "GA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "GA_CASH_4",
+      "displayName": "Cash 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "GA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "GA_GEORGIA_FIVE",
+      "displayName": "Georgia FIVE",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "GA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 5,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "GA_CASH_POP",
+      "displayName": "Cash Pop",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "GA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ID_IDAHO_CASH",
+      "displayName": "Idaho Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ID",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 45,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ID_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ID",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ID_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ID",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ID_WEEKLY_GRAND",
+      "displayName": "Weekly Grand",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ID",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": "2011-08-20",
+        "whiteMin": 1,
+        "whiteMax": 32,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IL_LOTTO",
+      "displayName": "Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IL",
+      "drawDays": ["MONDAY", "THURSDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 50,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IL_LUCKY_DAY_LOTTO",
+      "displayName": "Lucky Day Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 45,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IL_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IL_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IL",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IN_HOOSIER_LOTTO",
+      "displayName": "Hoosier Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IN",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 46,
+        "whitePickCount": 6,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0
+      }
+    },
+    {
+      "modeKey": "IN_CASH_5",
+      "displayName": "CA$H 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 45,
+        "whitePickCount": 5,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0
+      }
+    },
+    {
+      "modeKey": "IN_DAILY_3",
+      "displayName": "Daily 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0
+      }
+    },
+    {
+      "modeKey": "IN_DAILY_4",
+      "displayName": "Daily 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0
+      }
+    },
+    {
+      "modeKey": "IN_CASH_POP",
+      "displayName": "Cash POP",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0
+      }
+    },
+    {
+      "modeKey": "IN_QUICK_DRAW",
+      "displayName": "Quick Draw",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 80,
+        "whitePickCount": 10,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0
+      }
+    },
+    {
+      "modeKey": "IA_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IA",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IA_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IA_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "IA_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "IA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KS_KANSAS_CASH",
+      "displayName": "Kansas Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KS",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 32,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 25,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KS_2BY2",
+      "displayName": "2by2",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KS",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 26,
+        "whitePickCount": 2,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 26,
+        "redPickCount": 2,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KS_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KS",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KS_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KS",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KY_CASH_BALL_225",
+      "displayName": "Cash Ball 225",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 35,
+        "whitePickCount": 4,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 25,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KY_CASH_POP",
+      "displayName": "CASH POP",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KY_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KY_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "KY_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "KY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "LA_LOTTO",
+      "displayName": "Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "LA",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 42,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "LA_EASY_5",
+      "displayName": "Easy 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "LA",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 37,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "LA_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "LA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "LA_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "LA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "LA_PICK_5",
+      "displayName": "Pick 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "LA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 5,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_MEGABUCKS_PLUS",
+      "displayName": "Tri-State Megabucks Plus",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 41,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 6,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_GIMME_5",
+      "displayName": "Gimme 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ME_CASH_POP",
+      "displayName": "Cash POP",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ME",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MD_MULTI_MATCH",
+      "displayName": "Multi-Match",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MD",
+      "drawDays": ["MONDAY", "THURSDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 43,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MD_BONUS_MATCH_5",
+      "displayName": "Bonus Match 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MD",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 39,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MD_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MD",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MD_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MD",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MD_PICK_5",
+      "displayName": "Pick 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MD",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 5,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MA_MEGABUCKS",
+      "displayName": "Megabucks",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MA",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 44,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MA_MASS_CASH",
+      "displayName": "Mass Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 35,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MA_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MA_NUMBERS_GAME_2",
+      "displayName": "The Numbers Game (2-digit)",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 2,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MA_NUMBERS_GAME_3",
+      "displayName": "The Numbers Game (3-digit)",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MA_NUMBERS_GAME_4",
+      "displayName": "The Numbers Game (4-digit)",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MA",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MI_LOTTO_47",
+      "displayName": "Lotto 47",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MI",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 47,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MI_FANTASY_5",
+      "displayName": "Fantasy 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MI",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MI_DAILY_3",
+      "displayName": "Daily 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MI",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MI_DAILY_4",
+      "displayName": "Daily 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MI",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MN_GOPHER_5",
+      "displayName": "Gopher 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MN",
+      "drawDays": ["MONDAY", "WEDNESDAY", "FRIDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 47,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MN_NORTH_5",
+      "displayName": "North 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 34,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MN_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MN",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MN_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MN",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MS_MISSISSIPPI_MATCH_5",
+      "displayName": "Mississippi Match 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MS",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 35,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MS_CASH_3",
+      "displayName": "Cash 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MS",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MS_CASH_4",
+      "displayName": "Cash 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MS",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MS_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MS",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MS_CASH_POP",
+      "displayName": "Cash Pop",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MS",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MO_MO_MILLIONS",
+      "displayName": "MO Millions",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MO",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": "2025-10-22",
+        "whiteMin": 1,
+        "whiteMax": 42,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MO_SHOW_ME_CASH",
+      "displayName": "Show Me Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MO",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MO_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MO",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MO_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MO",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MO_CASH_POP",
+      "displayName": "Cash Pop",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MO",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "MT_MONTANA_CASH",
+      "displayName": "Montana Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MT",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 45,
+        "whitePickCount": 5,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": null
+      }
+    },
+    {
+      "modeKey": "MT_BIG_SKY_BONUS",
+      "displayName": "Big Sky Bonus",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MT",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 31,
+        "whitePickCount": 4,
+        "redMin": 1,
+        "redMax": 16,
+        "redPickCount": 1
+      }
+    },
+    {
+      "modeKey": "MT_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MT",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1
+      }
+    },
+    {
+      "modeKey": "MT_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "MT",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1
+      }
+    },
+    {
+      "modeKey": "NE_PICK_5",
+      "displayName": "Nebraska Pick 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 40,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NE_PICK_4",
+      "displayName": "Nebraska Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NE_PICK_3",
+      "displayName": "Nebraska Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NE_2BY2",
+      "displayName": "2by2",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 26,
+        "whitePickCount": 2,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 26,
+        "redPickCount": 2,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NE_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NE",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NE_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NE",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NH_MEGABUCKS",
+      "displayName": "Megabucks",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NH",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 41,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 6,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NH_GIMME_5",
+      "displayName": "Gimme 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NH",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NH_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NH",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NH_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NH",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NJ_PICK_3",
+      "displayName": "Pick-3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NJ",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NJ_PICK_4",
+      "displayName": "Pick-4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NJ",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NJ_JERSEY_CASH_5",
+      "displayName": "Jersey Cash 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NJ",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 45,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NJ_PICK_6",
+      "displayName": "Pick-6",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NJ",
+      "drawDays": ["MONDAY", "THURSDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 46,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NM_ROADRUNNER_CASH",
+      "displayName": "Roadrunner Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NM",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 37,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NM_PICK_3_PLUS",
+      "displayName": "Pick 3 Plus",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NM",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NM_PICK_4_PLUS",
+      "displayName": "Pick 4 Plus",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NM",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NM_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NM",
+      "drawDays": ["MONDAY","WEDNESDAY","SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NY_LOTTO",
+      "displayName": "Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NY",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 59,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NY_TAKE_5",
+      "displayName": "Take 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 39,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NY_CASH4LIFE",
+      "displayName": "Cash4Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 60,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 4,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NY_PICK_10",
+      "displayName": "Pick 10",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 80,
+        "whitePickCount": 10,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NY_NUMBERS",
+      "displayName": "Numbers",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NY_WIN_4",
+      "displayName": "Win 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NY",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NC_CAROLINA_CASH_5",
+      "displayName": "Carolina Cash 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 43,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NC_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NC_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "NC_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "NC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ND_2BY2",
+      "displayName": "2by2",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ND",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 26,
+        "whitePickCount": 2,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 26,
+        "redPickCount": 2,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ND_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ND",
+      "drawDays": ["MONDAY","WEDNESDAY","SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "ND_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "ND",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "jurisdictionCode": "OH",
+      "stateOnlyGameModes": [
+        {
+          "modeKey": "oh-classic-lotto",
+          "scope": "STATE",
+          "jurisdictionCode": "OH",
+          "displayName": "Classic Lotto",
+          "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+          "rules": {
+            "whiteMin": 1,
+            "whiteMax": 49,
+            "whitePickCount": 6,
+            "whiteOrdered": false,
+            "whiteAllowRepeats": false,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": null,
+            "redOrdered": null,
+            "redAllowRepeats": null,
+            "formatStartDate": null
+          }
+        },
+        {
+          "modeKey": "oh-rolling-cash-5",
+          "scope": "STATE",
+          "jurisdictionCode": "OH",
+          "displayName": "Rolling Cash 5",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "whiteMin": 1,
+            "whiteMax": 39,
+            "whitePickCount": 5,
+            "whiteOrdered": false,
+            "whiteAllowRepeats": false,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": null,
+            "redOrdered": null,
+            "redAllowRepeats": null,
+            "formatStartDate": null
+          }
+        },
+        {
+          "modeKey": "oh-pick-3",
+          "scope": "STATE",
+          "jurisdictionCode": "OH",
+          "displayName": "Pick 3",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "whiteMin": 0,
+            "whiteMax": 9,
+            "whitePickCount": 3,
+            "whiteOrdered": true,
+            "whiteAllowRepeats": true,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": null,
+            "redOrdered": null,
+            "redAllowRepeats": null,
+            "formatStartDate": null
+          }
+        },
+        {
+          "modeKey": "oh-pick-4",
+          "scope": "STATE",
+          "jurisdictionCode": "OH",
+          "displayName": "Pick 4",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "whiteMin": 0,
+            "whiteMax": 9,
+            "whitePickCount": 4,
+            "whiteOrdered": true,
+            "whiteAllowRepeats": true,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": null,
+            "redOrdered": null,
+            "redAllowRepeats": null,
+            "formatStartDate": null
+          }
+        },
+        {
+          "modeKey": "oh-pick-5",
+          "scope": "STATE",
+          "jurisdictionCode": "OH",
+          "displayName": "Pick 5",
+          "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+          "rules": {
+            "whiteMin": 0,
+            "whiteMax": 9,
+            "whitePickCount": 5,
+            "whiteOrdered": true,
+            "whiteAllowRepeats": true,
+            "redMin": null,
+            "redMax": null,
+            "redPickCount": null,
+            "redOrdered": null,
+            "redAllowRepeats": null,
+            "formatStartDate": null
+          }
+        }
+      ]
+    },
+    {
+      "modeKey": "OK_CASH_5",
+      "displayName": "Cash 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OK",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 36,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "OK_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OK",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "OK_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OK",
+      "drawDays": ["MONDAY","WEDNESDAY","SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "OK_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OK",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "OR_MEGABUCKS",
+      "displayName": "Oregon's Game Megabucks",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OR",
+      "drawDays": ["MONDAY","WEDNESDAY","SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "OR_WIN_FOR_LIFE",
+      "displayName": "Win for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OR",
+      "drawDays": ["MONDAY","WEDNESDAY","SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 77,
+        "whitePickCount": 4,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "OR_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "OR",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "PA_CASH_5",
+      "displayName": "Cash 5 with Quick Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "PA",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 43,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "PA_MATCH_6",
+      "displayName": "Match 6 Lotto",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "PA",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 49,
+        "whitePickCount": 6,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "PA_PICK_2",
+      "displayName": "PICK 2",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "PA",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 2,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "PA_PICK_3",
+      "displayName": "PICK 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "PA",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "PA_PICK_4",
+      "displayName": "PICK 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "PA",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "PA_PICK_5",
+      "displayName": "PICK 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "PA",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 5,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "RI_WILD_MONEY",
+      "displayName": "Wild Money",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "RI",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 38,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 38,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "RI_THE_NUMBERS",
+      "displayName": "The Numbers",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "RI",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "RI_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "RI",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SC_PALMETTO_CASH_5",
+      "displayName": "Palmetto Cash 5",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 42,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SC_PICK_3",
+      "displayName": "Pick 3",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 3,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SC_PICK_4",
+      "displayName": "Pick 4",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 0,
+        "whiteMax": 9,
+        "whitePickCount": 4,
+        "whiteOrdered": true,
+        "whiteAllowRepeats": true,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SC_CASH_POP",
+      "displayName": "CASH POP",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SC",
+      "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 15,
+        "whitePickCount": 1,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SD_DAKOTA_CASH",
+      "displayName": "Dakota Cash",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SD",
+      "drawDays": ["WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 35,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": null,
+        "redMax": null,
+        "redPickCount": 0,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SD_LOTTO_AMERICA",
+      "displayName": "Lotto America",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SD",
+      "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 52,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 10,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    {
+      "modeKey": "SD_LUCKY_FOR_LIFE",
+      "displayName": "Lucky for Life",
+      "scope": "STATE_ONLY",
+      "jurisdictionCode": "SD",
+      "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+      "rules": {
+        "formatStartDate": null,
+        "whiteMin": 1,
+        "whiteMax": 48,
+        "whitePickCount": 5,
+        "whiteOrdered": false,
+        "whiteAllowRepeats": false,
+        "redMin": 1,
+        "redMax": 18,
+        "redPickCount": 1,
+        "redOrdered": false,
+        "redAllowRepeats": false
+      }
+    },
+    [
+      {
+        "modeKey": "TN_TENNESSEE_CASH",
+        "displayName": "Tennessee Cash",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TN",
+        "drawDays": ["MONDAY", "WEDNESDAY", "FRIDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 35,
+          "whitePickCount": 5,
+          "redMin": 1,
+          "redMax": 5,
+          "redPickCount": 1
+        }
+      },
+      {
+        "modeKey": "TN_DAILY_TENNESSEE_JACKPOT",
+        "displayName": "Daily Tennessee Jackpot",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TN",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 38,
+          "whitePickCount": 5,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null
+        }
+      },
+      {
+        "modeKey": "TN_CASH_3",
+        "displayName": "Cash 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TN",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null
+        }
+      },
+      {
+        "modeKey": "TN_CASH_4",
+        "displayName": "Cash 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TN",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "TX_LOTTO_TEXAS",
+        "displayName": "Lotto Texas",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TX",
+        "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 54,
+          "whitePickCount": 6,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null,
+          "redOrdered": null,
+          "redAllowRepeats": null
+        }
+      },
+      {
+        "modeKey": "TX_TEXAS_TWO_STEP",
+        "displayName": "Texas Two Step",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TX",
+        "drawDays": ["MONDAY", "THURSDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 35,
+          "whitePickCount": 4,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 35,
+          "redPickCount": 1,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "TX_CASH_FIVE",
+        "displayName": "Cash Five",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TX",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 35,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null,
+          "redOrdered": null,
+          "redAllowRepeats": null
+        }
+      },
+      {
+        "modeKey": "TX_ALL_OR_NOTHING",
+        "displayName": "All or Nothing",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TX",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 24,
+          "whitePickCount": 12,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null,
+          "redOrdered": null,
+          "redAllowRepeats": null
+        }
+      },
+      {
+        "modeKey": "TX_PICK_3",
+        "displayName": "Pick 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TX",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null,
+          "redOrdered": null,
+          "redAllowRepeats": null
+        }
+      },
+      {
+        "modeKey": "TX_DAILY_4",
+        "displayName": "Daily 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "TX",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": null,
+          "redOrdered": null,
+          "redAllowRepeats": null
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "VT_MEGABUCKS",
+        "displayName": "Tri-State Megabucks",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VT",
+        "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 41,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 6,
+          "redPickCount": 1,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VT_GIMME_5",
+        "displayName": "Gimme 5",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VT",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 39,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VT_PICK_3",
+        "displayName": "Pick 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VT",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VT_PICK_4",
+        "displayName": "Pick 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VT",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VT_LUCKY_FOR_LIFE",
+        "displayName": "Lucky for Life",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VT",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 48,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 18,
+          "redPickCount": 1,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "VA_CASH_5",
+        "displayName": "Cash 5 with EZ Match",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 45,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VA_PICK_3",
+        "displayName": "Pick 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VA_PICK_4",
+        "displayName": "Pick 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VA_PICK_5",
+        "displayName": "Pick 5",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 5,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VA_CASH_POP",
+        "displayName": "CASH POP",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 15,
+          "whitePickCount": 1,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VA_BANK_A_MILLION",
+        "displayName": "Bank a Million",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VA",
+        "drawDays": ["WEDNESDAY","SATURDAY"],
+        "rules": null
+      }
+    ],
+    [
+      {
+        "modeKey": "WA_LOTTO",
+        "displayName": "Lotto",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WA",
+        "drawDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 49,
+          "whitePickCount": 6,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WA_HIT_5",
+        "displayName": "Hit 5",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 42,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WA_MATCH_4",
+        "displayName": "Match 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 24,
+          "whitePickCount": 4,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WA_PICK_3",
+        "displayName": "Pick 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WA_CASH_POP",
+        "displayName": "Cash Pop",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WA",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 15,
+          "whitePickCount": 1,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "WV_CASH_25",
+        "displayName": "Cash 25",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WV",
+        "drawDays": ["MONDAY", "TUESDAY", "THURSDAY", "FRIDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 25,
+          "whitePickCount": 6,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WV_DAILY_3",
+        "displayName": "Daily 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WV",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WV_DAILY_4",
+        "displayName": "Daily 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WV",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "WI_MEGABUCKS",
+        "displayName": "Megabucks",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WI",
+        "drawDays": ["WEDNESDAY", "SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 49,
+          "whitePickCount": 6,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WI_BADGER_5",
+        "displayName": "Badger 5",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WI",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 31,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WI_SUPERCASH",
+        "displayName": "SuperCash!",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WI",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 39,
+          "whitePickCount": 6,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WI_ALL_OR_NOTHING",
+        "displayName": "All or Nothing",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WI",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 22,
+          "whitePickCount": 11,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WI_PICK_3",
+        "displayName": "Pick 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WI",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WI_PICK_4",
+        "displayName": "Pick 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WI",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "WY_COWBOY_DRAW",
+        "displayName": "Cowboy Draw",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WY",
+        "drawDays": ["MONDAY", "THURSDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 45,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "WY_2BY2",
+        "displayName": "2by2",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "WY",
+        "drawDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 26,
+          "whitePickCount": 2,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 26,
+          "redPickCount": 2,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "DC_DC_2",
+        "displayName": "DC 2",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "DC",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 2,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "DC_DC_3",
+        "displayName": "DC 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "DC",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "DC_DC_4",
+        "displayName": "DC 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "DC",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "DC_DC_5",
+        "displayName": "DC 5",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "DC",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 5,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "PR_PEGA_2",
+        "displayName": "Pega 2",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "PR",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 2,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "PR_PEGA_3",
+        "displayName": "Pega 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "PR",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "PR_PEGA_4",
+        "displayName": "Pega 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "PR",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "PR_LOTO_CASH",
+        "displayName": "Loto Cash",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "PR",
+        "drawDays": ["MONDAY","WEDNESDAY","FRIDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 35,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 10,
+          "redPickCount": 1,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "PR_REVANCHA",
+        "displayName": "Revancha",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "PR",
+        "drawDays": ["MONDAY","WEDNESDAY","FRIDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 35,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 10,
+          "redPickCount": 1,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ],
+    [
+      {
+        "modeKey": "VI_PICK_3",
+        "displayName": "Pick 3",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VI",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 3,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VI_PICK_4",
+        "displayName": "Pick 4",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VI",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 0,
+          "whiteMax": 9,
+          "whitePickCount": 4,
+          "whiteOrdered": true,
+          "whiteAllowRepeats": true,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VI_LUCKY_PICK",
+        "displayName": "Lucky Pick",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VI",
+        "drawDays": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 28,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": null,
+          "redMax": null,
+          "redPickCount": 0,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      },
+      {
+        "modeKey": "VI_SUPER_LOTTO",
+        "displayName": "Super Lotto",
+        "scope": "STATE_ONLY",
+        "jurisdictionCode": "VI",
+        "drawDays": ["TUESDAY","FRIDAY"],
+        "rules": {
+          "formatStartDate": null,
+          "whiteMin": 1,
+          "whiteMax": 35,
+          "whitePickCount": 5,
+          "whiteOrdered": false,
+          "whiteAllowRepeats": false,
+          "redMin": 1,
+          "redMax": 10,
+          "redPickCount": 1,
+          "redOrdered": false,
+          "redAllowRepeats": false
+        }
+      }
+    ]
+
+  ]
+}
