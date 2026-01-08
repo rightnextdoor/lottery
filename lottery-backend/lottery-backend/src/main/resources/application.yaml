@@ -14,7 +14,6 @@ management:
       exposure:
         include: health,info
 
-# App-level settings (we’ll use these later for JWT, scheduling, etc.)
 app:
   jwt:
     secret: ${JWT_SECRET:change-me}
@@ -36,15 +35,13 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
 
   flyway:
-    enabled: true
-    locations: classpath:db/migration
-    baseline-on-migrate: true
+    enabled: false
 
 logging:
   level:
@@ -65,7 +62,15 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
 
   flyway:
-    enabled: true
+    enabled: false
+
+lottery:
+  ingestion:
+    allowedDomains:
+      - texaslottery.com
+      - www.texaslottery.com
+    maxBytes: 5242880
+    maxRedirects: 5
