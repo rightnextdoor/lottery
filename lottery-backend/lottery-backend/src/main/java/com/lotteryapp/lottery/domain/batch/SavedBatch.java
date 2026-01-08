@@ -7,6 +7,9 @@ import lombok.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 
 @Entity
 @Table(name = "saved_batch")
@@ -30,6 +33,13 @@ public class SavedBatch {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @Column(name = "keep_forever", nullable = false)
+    @Builder.Default
+    private Boolean keepForever = false;
+
+    @Column(name = "expires_at")
+    private Instant expiresAt;
+
 
     @OneToMany(mappedBy = "savedBatch", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("ticketIndex ASC")
@@ -38,6 +48,22 @@ public class SavedBatch {
 
     @PrePersist
     void prePersist() {
-        if (createdAt == null) createdAt = Instant.now();
+        Instant now = Instant.now();
+
+        if (createdAt == null) createdAt = now;
+        if (keepForever == null) keepForever = false;
+
+        if (Boolean.TRUE.equals(keepForever)) {
+            // Keep forever => no expiry
+            expiresAt = null;
+            return;
+        }
+
+        if (expiresAt == null) {
+            expiresAt = OffsetDateTime.now(ZoneOffset.UTC)
+                    .plusMonths(12)
+                    .toInstant();
+        }
     }
+
 }

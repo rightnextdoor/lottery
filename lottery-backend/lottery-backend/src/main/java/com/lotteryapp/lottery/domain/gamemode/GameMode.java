@@ -46,6 +46,12 @@ public class GameMode {
     @JoinColumn(name = "jurisdiction_code")
     private Jurisdiction jurisdiction;
 
+    @Column(name = "tier_range_start_date")
+    private LocalDate tierRangeStartDate;
+
+    @Column(name = "tier_range_end_date")
+    private LocalDate tierRangeEndDate;
+
     @Column(name = "latest_draw_date")
     private LocalDate latestDrawDate;
 
