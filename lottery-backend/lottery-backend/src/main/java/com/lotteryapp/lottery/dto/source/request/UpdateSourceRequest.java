@@ -2,16 +2,14 @@ package com.lotteryapp.lottery.dto.source.request;
 
 import com.lotteryapp.lottery.domain.source.SourceType;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateSourceRequest {
+
     private String stateCode;
     private Long gameModeId;
 
@@ -32,4 +30,8 @@ public class UpdateSourceRequest {
     private Boolean drawHistory;
     private Boolean supportsRules;
     private Boolean supportsSchedule;
+    private Boolean supportsJackpotAmount;
+    private Boolean supportsCashValue;
+    private Boolean supportsDrawTime;
+    private Boolean supportsTimeZone;
 }

@@ -2,6 +2,7 @@ package com.lotteryapp.lottery.ingestion.model;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,4 +28,7 @@ public class IngestedDraw {
     private List<Integer> redNumbers;
 
     private Integer multiplier;
+
+    private BigDecimal jackpotAmount;
+    private BigDecimal cashValue;
 }

@@ -5,6 +5,7 @@ import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.IngestedDraw;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,16 @@ import java.util.regex.Pattern;
 public class CsvDrawParser implements DrawParser {
 
     private static final Pattern INT_PATTERN = Pattern.compile("\\d+");
+
+    private static final Pattern MONEY_DOLLAR = Pattern.compile(
+            "\\$\\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\\.[0-9]+)?|[0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION|B|M)?",
+            Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern MONEY_WORD = Pattern.compile(
+            "\\b([0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION)\\b",
+            Pattern.CASE_INSENSITIVE
+    );
+
     private static final List<DateTimeFormatter> DATE_FORMATS = List.of(
             DateTimeFormatter.ISO_LOCAL_DATE,
             DateTimeFormatter.ofPattern("M/d/yyyy"),
@@ -55,6 +66,10 @@ public class CsvDrawParser implements DrawParser {
         Integer winningCol = first(idx, "winning numbers", "winning_numbers", "winningnumbers", "numbers");
         Integer multCol  = first(idx, "multiplier", "power play", "power_play", "megaplier");
 
+        // NEW (optional)
+        Integer jackpotCol = first(idx, "jackpot", "jackpot amount", "jackpot_amount", "estimated jackpot", "annuity");
+        Integer cashCol    = first(idx, "cash value", "cash_value", "cash option", "cash_option", "lump sum", "lump_sum", "lumpsum");
+
         if (dateCol == null || winningCol == null) {
             throw new BadRequestException("CSV header missing required columns (draw date / winning numbers)");
         }
@@ -74,13 +89,15 @@ public class CsvDrawParser implements DrawParser {
             List<Integer> whites = nums;
             List<Integer> reds = null;
 
-            // Common multi format: 5 white + 1 red (last)
             if (nums.size() >= 6) {
                 whites = nums.subList(0, 5);
                 reds = List.of(nums.get(5));
             }
 
             Integer mult = tryParseInt(cell(row, multCol));
+
+            BigDecimal jackpot = parseMoneyText(cell(row, jackpotCol));
+            BigDecimal cash = parseMoneyText(cell(row, cashCol));
 
             out.add(IngestedDraw.builder()
                     .gameModeId(gameModeId)
@@ -89,6 +106,8 @@ public class CsvDrawParser implements DrawParser {
                     .whiteNumbers(new ArrayList<>(whites))
                     .redNumbers(reds == null ? null : new ArrayList<>(reds))
                     .multiplier(mult)
+                    .jackpotAmount(jackpot)
+                    .cashValue(cash)
                     .build());
         }
 
@@ -184,5 +203,38 @@ public class CsvDrawParser implements DrawParser {
 
         out.add(cur.toString());
         return out;
+    }
+
+    private static BigDecimal parseMoneyText(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        if (t.isBlank()) return null;
+
+        Matcher md = MONEY_DOLLAR.matcher(t);
+        if (md.find()) return scaleMoney(md.group(1), md.group(2));
+
+        Matcher mw = MONEY_WORD.matcher(t);
+        if (mw.find()) return scaleMoney(mw.group(1), mw.group(2));
+
+        String digits = t.replaceAll("[,\\s$]", "");
+        if (digits.matches("\\d+(?:\\.\\d+)?")) {
+            try { return new BigDecimal(digits); } catch (Exception ignored) { }
+        }
+
+        return null;
+    }
+
+    private static BigDecimal scaleMoney(String number, String scale) {
+        if (number == null) return null;
+        String n = number.replace(",", "").trim();
+        BigDecimal base;
+        try { base = new BigDecimal(n); } catch (Exception e) { return null; }
+
+        if (scale == null || scale.isBlank()) return base;
+
+        String sc = scale.trim().toUpperCase(Locale.ROOT);
+        if (sc.startsWith("B")) return base.multiply(BigDecimal.valueOf(1_000_000_000L));
+        if (sc.startsWith("M")) return base.multiply(BigDecimal.valueOf(1_000_000L));
+        return base;
     }
 }

@@ -1,10 +1,7 @@
 package com.lotteryapp.lottery.dto.source.response;
 
 import com.lotteryapp.lottery.domain.source.SourceType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -33,6 +30,10 @@ public class SourceResponse {
     private boolean drawHistory;
     private boolean supportsRules;
     private boolean supportsSchedule;
+    private boolean supportsJackpotAmount;
+    private boolean supportsCashValue;
+    private boolean supportsDrawTime;
+    private boolean supportsTimeZone;
 
     private Instant createdAt;
     private Instant updatedAt;

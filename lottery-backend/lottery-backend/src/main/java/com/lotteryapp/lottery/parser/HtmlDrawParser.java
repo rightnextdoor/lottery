@@ -5,6 +5,7 @@ import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.IngestedDraw;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
@@ -17,6 +18,15 @@ public class HtmlDrawParser implements DrawParser {
     private static final Pattern DATE_US = Pattern.compile("\\b(\\d{1,2})/(\\d{1,2})/(\\d{4})\\b");
     private static final Pattern DATE_ISO = Pattern.compile("\\b(\\d{4})-(\\d{2})-(\\d{2})\\b");
     private static final Pattern INT = Pattern.compile("\\b\\d{1,2}\\b");
+
+    private static final Pattern MONEY_DOLLAR = Pattern.compile(
+            "\\$\\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\\.[0-9]+)?|[0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION|B|M)?",
+            Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern MONEY_WORD = Pattern.compile(
+            "\\b([0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION)\\b",
+            Pattern.CASE_INSENSITIVE
+    );
 
     @Override
     public SourceType supportedSourceType() {
@@ -36,7 +46,6 @@ public class HtmlDrawParser implements DrawParser {
         String html = new String(bytes, StandardCharsets.UTF_8);
         String text = html.replaceAll("<[^>]*>", " ").replaceAll("\\s{2,}", " ").trim();
 
-        // Split into chunks to increase chance date + numbers appear together
         String[] chunks = text.split("(?i)draw|results|winning");
         List<IngestedDraw> out = new ArrayList<>();
 
@@ -51,12 +60,17 @@ public class HtmlDrawParser implements DrawParser {
             List<Integer> whites = nums.subList(0, 5);
             List<Integer> reds = List.of(nums.get(5));
 
+            BigDecimal jackpot = parseMoneyNear(chunk, "JACKPOT");
+            BigDecimal cash = parseMoneyNear(chunk, "CASH");
+
             out.add(IngestedDraw.builder()
                     .gameModeId(gameModeId)
                     .stateCode(stateCode)
                     .drawDate(date)
                     .whiteNumbers(new ArrayList<>(whites))
                     .redNumbers(new ArrayList<>(reds))
+                    .jackpotAmount(jackpot)
+                    .cashValue(cash)
                     .build());
         }
 
@@ -87,5 +101,38 @@ public class HtmlDrawParser implements DrawParser {
         List<Integer> out = new ArrayList<>();
         while (m.find()) out.add(Integer.parseInt(m.group()));
         return out;
+    }
+
+    private static BigDecimal parseMoneyNear(String chunk, String keywordUpper) {
+        if (chunk == null) return null;
+        String upper = chunk.toUpperCase(Locale.ROOT);
+        int idx = upper.indexOf(keywordUpper);
+        if (idx < 0) return null;
+
+        int start = Math.max(0, idx - 80);
+        int end = Math.min(chunk.length(), idx + 200);
+        String window = chunk.substring(start, end);
+
+        Matcher md = MONEY_DOLLAR.matcher(window);
+        if (md.find()) return scaleMoney(md.group(1), md.group(2));
+
+        Matcher mw = MONEY_WORD.matcher(window);
+        if (mw.find()) return scaleMoney(mw.group(1), mw.group(2));
+
+        return null;
+    }
+
+    private static BigDecimal scaleMoney(String number, String scale) {
+        if (number == null) return null;
+        String n = number.replace(",", "").trim();
+        BigDecimal base;
+        try { base = new BigDecimal(n); } catch (Exception e) { return null; }
+
+        if (scale == null || scale.isBlank()) return base;
+
+        String sc = scale.trim().toUpperCase(Locale.ROOT);
+        if (sc.startsWith("B")) return base.multiply(BigDecimal.valueOf(1_000_000_000L));
+        if (sc.startsWith("M")) return base.multiply(BigDecimal.valueOf(1_000_000L));
+        return base;
     }
 }

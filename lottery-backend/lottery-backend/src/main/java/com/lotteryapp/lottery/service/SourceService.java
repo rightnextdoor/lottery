@@ -92,6 +92,10 @@ public class SourceService {
                 .drawHistory(bool(request.getDrawHistory()))
                 .supportsRules(bool(request.getSupportsRules()))
                 .supportsSchedule(bool(request.getSupportsSchedule()))
+                .supportsJackpotAmount(bool(request.getSupportsJackpotAmount()))
+                .supportsCashValue(bool(request.getSupportsCashValue()))
+                .supportsDrawTime(bool(request.getSupportsDrawTime()))
+                .supportsTimeZone(bool(request.getSupportsTimeZone()))
                 .build();
 
         Source saved = sourceRepository.save(source);
@@ -142,6 +146,10 @@ public class SourceService {
         if (request.getDrawHistory() != null) source.setDrawHistory(request.getDrawHistory());
         if (request.getSupportsRules() != null) source.setSupportsRules(request.getSupportsRules());
         if (request.getSupportsSchedule() != null) source.setSupportsSchedule(request.getSupportsSchedule());
+        if (request.getSupportsJackpotAmount() != null) source.setSupportsJackpotAmount(request.getSupportsJackpotAmount());
+        if (request.getSupportsCashValue() != null) source.setSupportsCashValue(request.getSupportsCashValue());
+        if (request.getSupportsDrawTime() != null) source.setSupportsDrawTime(request.getSupportsDrawTime());
+        if (request.getSupportsTimeZone() != null) source.setSupportsTimeZone(request.getSupportsTimeZone());
 
         Source saved = sourceRepository.save(source);
 
@@ -206,6 +214,10 @@ public class SourceService {
                 .drawHistory(s.isDrawHistory())
                 .supportsRules(s.isSupportsRules())
                 .supportsSchedule(s.isSupportsSchedule())
+                .supportsJackpotAmount(s.isSupportsJackpotAmount())
+                .supportsCashValue(s.isSupportsCashValue())
+                .supportsDrawTime(s.isSupportsDrawTime())
+                .supportsTimeZone(s.isSupportsTimeZone())
                 .createdAt(s.getCreatedAt())
                 .updatedAt(s.getUpdatedAt())
                 .build();
@@ -229,6 +241,11 @@ public class SourceService {
         requireNotNull(r.getDrawHistory(), "drawHistory");
         requireNotNull(r.getSupportsRules(), "supportsRules");
         requireNotNull(r.getSupportsSchedule(), "supportsSchedule");
+        requireNotNull(r.getSupportsJackpotAmount(), "supportsJackpotAmount");
+        requireNotNull(r.getSupportsCashValue(), "supportsCashValue");
+        requireNotNull(r.getSupportsDrawTime(), "supportsDrawTime");
+        requireNotNull(r.getSupportsTimeZone(), "supportsTimeZone");
+
     }
 
     private static void validateUrlTemplate(String urlTemplate) {

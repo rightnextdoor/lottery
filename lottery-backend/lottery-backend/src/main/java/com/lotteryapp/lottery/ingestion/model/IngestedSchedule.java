@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +25,7 @@ public class IngestedSchedule {
     private List<String> drawDays;
 
     private LocalDate nextDrawDate;
+
+    private LocalTime drawTimeLocal;
+    private String drawTimeZoneId;
 }

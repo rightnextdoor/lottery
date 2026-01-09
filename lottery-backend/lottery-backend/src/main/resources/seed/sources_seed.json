@@ -15,7 +15,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -30,7 +34,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": false,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -45,7 +53,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -60,7 +72,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -75,7 +91,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -90,7 +110,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -105,7 +129,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": true
+      "supportsSchedule": true,
+      "supportsJackpotAmount": true,
+      "supportsCashValue": true,
+      "supportsDrawTime": true,
+      "supportsTimeZone": true
     },
     {
       "stateCode": "MULTI",
@@ -120,7 +148,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -135,7 +167,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -150,7 +186,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -165,7 +205,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": true
+      "supportsSchedule": true,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": true,
+      "supportsTimeZone": true
     },
     {
       "stateCode": "MULTI",
@@ -180,7 +224,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -195,7 +243,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": false,
-      "supportsSchedule": true
+      "supportsSchedule": true,
+      "supportsJackpotAmount": true,
+      "supportsCashValue": true,
+      "supportsDrawTime": true,
+      "supportsTimeZone": true
     },
     {
       "stateCode": "MULTI",
@@ -210,7 +262,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -225,7 +281,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -240,7 +300,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -255,7 +319,11 @@
       "supportsDrawByDate": true,
       "supportsDrawHistory": true,
       "supportsRules": false,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -270,7 +338,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": false,
-      "supportsSchedule": true
+      "supportsSchedule": true,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": true,
+      "supportsTimeZone": true
     },
     {
       "stateCode": "MULTI",
@@ -285,7 +357,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -300,7 +376,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -315,7 +395,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": false
+      "supportsSchedule": false,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": false,
+      "supportsTimeZone": false
     },
     {
       "stateCode": "MULTI",
@@ -330,7 +414,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": true
+      "supportsSchedule": true,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": true,
+      "supportsTimeZone": true
     },
     {
       "stateCode": "MULTI",
@@ -345,7 +433,11 @@
       "supportsDrawByDate": false,
       "supportsDrawHistory": false,
       "supportsRules": true,
-      "supportsSchedule": true
+      "supportsSchedule": true,
+      "supportsJackpotAmount": false,
+      "supportsCashValue": false,
+      "supportsDrawTime": true,
+      "supportsTimeZone": true
     }
   ]
 }

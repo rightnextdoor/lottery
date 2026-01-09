@@ -7,6 +7,7 @@ import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.IngestedDraw;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,15 @@ public class JsonDrawParser implements DrawParser {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Pattern INT = Pattern.compile("\\d+");
+
+    private static final Pattern MONEY_DOLLAR = Pattern.compile(
+            "\\$\\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\\.[0-9]+)?|[0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION|B|M)?",
+            Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern MONEY_WORD = Pattern.compile(
+            "\\b([0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION)\\b",
+            Pattern.CASE_INSENSITIVE
+    );
 
     private static final List<DateTimeFormatter> DATE_FORMATS = List.of(
             DateTimeFormatter.ISO_LOCAL_DATE,
@@ -69,7 +79,6 @@ public class JsonDrawParser implements DrawParser {
 
             Integer mult = parseInt(text(row, "multiplier"), text(row, "power_play"), text(row, "megaplier"));
 
-            // Try explicit bonus fields first
             Integer bonus = parseInt(
                     text(row, "powerball"),
                     text(row, "power_ball"),
@@ -80,10 +89,7 @@ public class JsonDrawParser implements DrawParser {
             );
 
             List<Integer> nums = parseInts(text(row, "winning_numbers"), text(row, "winningNumbers"), text(row, "numbers"));
-            if (nums.isEmpty()) {
-                // fallback: scan all string values
-                nums = parseInts(row.toString());
-            }
+            if (nums.isEmpty()) nums = parseInts(row.toString());
             if (nums.isEmpty()) continue;
 
             List<Integer> whites;
@@ -91,7 +97,6 @@ public class JsonDrawParser implements DrawParser {
 
             if (bonus != null) {
                 reds = List.of(bonus);
-                // Remove bonus from end if it’s included in winning_numbers
                 if (!nums.isEmpty() && Objects.equals(nums.get(nums.size() - 1), bonus)) {
                     nums = nums.subList(0, nums.size() - 1);
                 }
@@ -99,13 +104,24 @@ public class JsonDrawParser implements DrawParser {
 
             if (nums.size() >= 5) {
                 whites = nums.subList(0, 5);
-                // If no explicit bonus but we have 6 nums, treat last as red
                 if (reds == null && nums.size() >= 6) {
                     reds = List.of(nums.get(5));
                 }
             } else {
                 whites = nums;
             }
+
+            BigDecimal jackpot = parseMoney(
+                    row,
+                    "jackpot", "jackpot_amount", "jackpotAmount", "estimated_jackpot", "estimatedJackpot",
+                    "annuity", "annuity_amount", "annuityAmount"
+            );
+
+            BigDecimal cash = parseMoney(
+                    row,
+                    "cash_value", "cashValue", "cash", "cash_option", "cashOption",
+                    "lump_sum", "lumpSum", "lumpsum"
+            );
 
             out.add(IngestedDraw.builder()
                     .gameModeId(gameModeId)
@@ -114,6 +130,8 @@ public class JsonDrawParser implements DrawParser {
                     .whiteNumbers(new ArrayList<>(whites))
                     .redNumbers(reds == null ? null : new ArrayList<>(reds))
                     .multiplier(mult)
+                    .jackpotAmount(jackpot)
+                    .cashValue(cash)
                     .build());
         }
 
@@ -130,7 +148,6 @@ public class JsonDrawParser implements DrawParser {
                 JsonNode n = root.get(k);
                 if (n != null && n.isArray()) return n;
             }
-            // If object contains an array anywhere, take first
             Iterator<Map.Entry<String, JsonNode>> it = root.fields();
             while (it.hasNext()) {
                 Map.Entry<String, JsonNode> e = it.next();
@@ -185,5 +202,87 @@ public class JsonDrawParser implements DrawParser {
         List<Integer> out = new ArrayList<>();
         while (m.find()) out.add(Integer.parseInt(m.group()));
         return out;
+    }
+
+    private static BigDecimal parseMoney(JsonNode row, String... fields) {
+        for (String f : fields) {
+            JsonNode v = row.get(f);
+            BigDecimal m = parseMoneyNode(v);
+            if (m != null) return m;
+        }
+
+        // Fallback: scan likely keys
+        Iterator<Map.Entry<String, JsonNode>> it = row.fields();
+        while (it.hasNext()) {
+            Map.Entry<String, JsonNode> e = it.next();
+            String key = e.getKey() == null ? "" : e.getKey().toLowerCase(Locale.ROOT);
+            if (key.contains("jackpot") || key.contains("cash") || key.contains("lump") || key.contains("annuity")) {
+                BigDecimal m = parseMoneyNode(e.getValue());
+                if (m != null) return m;
+            }
+        }
+        return null;
+    }
+
+    private static BigDecimal parseMoneyNode(JsonNode v) {
+        if (v == null || v.isNull()) return null;
+
+        if (v.isNumber()) {
+            try { return new BigDecimal(v.asText()); } catch (Exception ignored) { return null; }
+        }
+
+        if (v.isTextual()) {
+            return parseMoneyText(v.asText());
+        }
+
+        if (v.isObject()) {
+            // try common nested patterns: { amount: "...", cash: "..." }
+            Iterator<Map.Entry<String, JsonNode>> it = v.fields();
+            while (it.hasNext()) {
+                Map.Entry<String, JsonNode> e = it.next();
+                BigDecimal m = parseMoneyNode(e.getValue());
+                if (m != null) return m;
+            }
+        }
+
+        return null;
+    }
+
+    private static BigDecimal parseMoneyText(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        if (t.isBlank()) return null;
+
+        Matcher md = MONEY_DOLLAR.matcher(t);
+        if (md.find()) {
+            return scaleMoney(md.group(1), md.group(2));
+        }
+
+        Matcher mw = MONEY_WORD.matcher(t);
+        if (mw.find()) {
+            return scaleMoney(mw.group(1), mw.group(2));
+        }
+
+        // digits-only fallback
+        String digits = t.replaceAll("[,\\s]", "");
+        if (digits.matches("\\d+(?:\\.\\d+)?")) {
+            try { return new BigDecimal(digits); } catch (Exception ignored) { }
+        }
+
+        return null;
+    }
+
+    private static BigDecimal scaleMoney(String number, String scale) {
+        if (number == null) return null;
+        String n = number.replace(",", "").trim();
+        BigDecimal base;
+        try { base = new BigDecimal(n); } catch (Exception e) { return null; }
+
+        if (scale == null || scale.isBlank()) return base;
+
+        String sc = scale.trim().toUpperCase(Locale.ROOT);
+        if (sc.startsWith("B")) return base.multiply(BigDecimal.valueOf(1_000_000_000L));
+        if (sc.startsWith("M")) return base.multiply(BigDecimal.valueOf(1_000_000L));
+        return base;
     }
 }
