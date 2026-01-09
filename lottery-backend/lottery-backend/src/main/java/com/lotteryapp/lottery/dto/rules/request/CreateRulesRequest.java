@@ -1,38 +1,43 @@
-package com.lotteryapp.lottery.ingestion.model;
+package com.lotteryapp.lottery.dto.rules.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Map;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngestedRules {
+public class CreateRulesRequest {
 
+    @NotNull
     private Long gameModeId;
-    private String stateCode;
-
-    private Long sourceId;
-    private Instant fetchedAt;
-    private Map<String, Object> meta;
 
     private LocalDate formatStartDate;
 
-    // White pool
-    private Integer whitePickCount;
+    @Min(1)
     private Integer whiteMin;
+
+    @Min(1)
     private Integer whiteMax;
+
+    @Min(1)
+    private Integer whitePickCount;
+
     private Boolean whiteOrdered;
     private Boolean whiteAllowRepeats;
 
-    // Red pool (optional)
-    private Integer redPickCount;
+    @Min(0)
     private Integer redMin;
+
+    @Min(0)
     private Integer redMax;
+
+    @Min(0)
+    private Integer redPickCount;
+
     private Boolean redOrdered;
     private Boolean redAllowRepeats;
 }

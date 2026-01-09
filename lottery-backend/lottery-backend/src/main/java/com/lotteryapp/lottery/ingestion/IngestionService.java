@@ -11,8 +11,9 @@ import com.lotteryapp.lottery.ingestion.source.DrawSourceClient;
 import com.lotteryapp.lottery.parser.DrawParser;
 import com.lotteryapp.lottery.parser.DrawParserRegistry;
 import com.lotteryapp.lottery.parser.HtmlScheduleParser;
-import com.lotteryapp.lottery.parser.PdfRulesParser;
 import com.lotteryapp.lottery.repository.SourceRepository;
+import com.lotteryapp.lottery.parser.RulesParser;
+import com.lotteryapp.lottery.parser.RulesParserRegistry;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -28,22 +29,24 @@ public class IngestionService {
     private final DrawSourceClient drawSourceClient;
 
     private final DrawParserRegistry drawParserRegistry;
-    private final PdfRulesParser pdfRulesParser;
+    private final RulesParserRegistry rulesParserRegistry;
+
     private final HtmlScheduleParser htmlScheduleParser;
 
     public IngestionService(
             SourceRepository sourceRepository,
             DrawSourceClient drawSourceClient,
             DrawParserRegistry drawParserRegistry,
-            PdfRulesParser pdfRulesParser,
+            RulesParserRegistry rulesParserRegistry,
             HtmlScheduleParser htmlScheduleParser
     ) {
         this.sourceRepository = sourceRepository;
         this.drawSourceClient = drawSourceClient;
         this.drawParserRegistry = drawParserRegistry;
-        this.pdfRulesParser = pdfRulesParser;
+        this.rulesParserRegistry = rulesParserRegistry;
         this.htmlScheduleParser = htmlScheduleParser;
     }
+
 
     // -----------------------------
     // DRAW
@@ -134,16 +137,19 @@ public class IngestionService {
                         "Accept", acceptHeaderFor(src.getSourceType())
                 ));
 
-                IngestedRules rules = switch (src.getSourceType()) {
-                    case PDF -> pdfRulesParser.parse(fetched.bytes(), gameModeId, normState(stateCode));
-                    default -> throw new BadRequestException("No rules parser implemented for sourceType=" + src.getSourceType());
-                };
+                RulesParser parser = rulesParserRegistry.resolve(src.getSourceType(), src.getParserKey());
+                IngestedRules rules = parser.parse(fetched.bytes(), gameModeId, normState(stateCode));
 
                 rules.setGameModeId(gameModeId);
                 rules.setStateCode(normState(stateCode));
                 rules.setSourceId(src.getId());
                 rules.setFetchedAt(Instant.now());
-                rules.setMeta(meta(src, fetched));
+
+                // Merge parser meta + source meta (don’t overwrite parser findings)
+                Map<String, Object> merged = meta(src, fetched);
+                if (rules.getMeta() != null) merged.putAll(rules.getMeta());
+                rules.setMeta(merged);
+
                 return rules;
 
             } catch (Exception e) {

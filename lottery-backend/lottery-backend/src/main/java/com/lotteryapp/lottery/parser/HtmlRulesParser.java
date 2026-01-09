@@ -3,11 +3,9 @@ package com.lotteryapp.lottery.parser;
 import com.lotteryapp.common.exception.BadRequestException;
 import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.IngestedRules;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.LinkedHashMap;
@@ -17,16 +15,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class PdfRulesParser implements RulesParser {
+public class HtmlRulesParser implements RulesParser {
 
+    // Common “pick/choose N numbers from A to B” patterns
     private static final Pattern CHOOSE_FROM_TO = Pattern.compile(
             "(?i)(?:choose|pick)\\s+(\\d+)\\s+numbers?\\s+from\\s+(\\d+)\\s+(?:to|through|thru|-)\\s+(\\d+)"
     );
 
+    // Bonus / red ball patterns
     private static final Pattern BONUS_FROM_TO = Pattern.compile(
             "(?i)(?:choose|pick)\\s+(\\d+)\\s+(?:power\\s*ball|powerball|mega\\s*ball|megaball|bonus(?:\\s+ball)?|ball)\\s+(?:number|numbers)?\\s*from\\s+(\\d+)\\s+(?:to|through|thru|-)\\s+(\\d+)"
     );
 
+    // Date patterns for format start
     private static final Pattern DATE_MDY = Pattern.compile(
             "(?i)(?:effective|beginning|starting|as of)\\s+(\\d{1,2})/(\\d{1,2})/(\\d{4})"
     );
@@ -36,41 +37,37 @@ public class PdfRulesParser implements RulesParser {
 
     @Override
     public SourceType supportedSourceType() {
-        return SourceType.PDF;
+        return SourceType.HTML;
     }
 
     @Override
     public boolean supports(String parserKey) {
-        if (parserKey == null) return true;
-        String k = parserKey.trim().toUpperCase(Locale.ROOT);
-        return k.contains("RULE") || k.contains("PDF");
+        // Safe default: allow as fallback for HTML rules sources.
+        return true;
     }
 
     @Override
     public IngestedRules parse(byte[] bytes, Long gameModeId, String stateCode) {
-        if (bytes == null || bytes.length == 0) {
-            throw new BadRequestException("Rules PDF is empty");
-        }
+        if (bytes == null || bytes.length == 0) throw new BadRequestException("Rules HTML is empty");
 
-        String text = extractText(bytes);
-        String normalized = normalize(text);
+        String raw = new String(bytes, StandardCharsets.UTF_8);
+        String text = normalize(raw);
 
-        Match white = findFirst(CHOOSE_FROM_TO, normalized);
-        if (white == null) {
-            throw new BadRequestException("Could not find white-ball rule pattern in PDF");
-        }
+        Match white = findFirst(CHOOSE_FROM_TO, text);
+        if (white == null) throw new BadRequestException("Could not find white-ball rule pattern in HTML");
 
-        Match red = findFirst(BONUS_FROM_TO, normalized);
+        Match red = findFirst(BONUS_FROM_TO, text);
 
         Map<String, Object> meta = new LinkedHashMap<>();
 
-        LocalDate formatStartDate = parseFormatStartDate(normalized, meta);
+        LocalDate formatStartDate = parseFormatStartDate(text, meta);
 
-        Boolean whiteOrdered = parseOrdered(normalized, meta, "whiteOrdered");
-        Boolean whiteRepeats = parseRepeats(normalized, meta, "whiteAllowRepeats");
+        // ordered/repeats heuristics (try -> infer -> default)
+        Boolean whiteOrdered = parseOrdered(text, meta, "whiteOrdered");
+        Boolean whiteRepeats = parseRepeats(text, meta, "whiteAllowRepeats");
 
-        Boolean redOrdered = parseOrdered(normalized, meta, "redOrdered");
-        Boolean redRepeats = parseRepeats(normalized, meta, "redAllowRepeats");
+        Boolean redOrdered = parseOrdered(text, meta, "redOrdered");
+        Boolean redRepeats = parseRepeats(text, meta, "redAllowRepeats");
 
         IngestedRules.IngestedRulesBuilder b = IngestedRules.builder()
                 .gameModeId(gameModeId)
@@ -94,19 +91,16 @@ public class PdfRulesParser implements RulesParser {
         return b.build();
     }
 
-    private static String extractText(byte[] bytes) {
-        try (PDDocument doc = PDDocument.load(new ByteArrayInputStream(bytes))) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            stripper.setSortByPosition(true);
-            return stripper.getText(doc);
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to read rules PDF");
-        }
-    }
+    // --------------------
+    // Helpers
+    // --------------------
 
     private static String normalize(String s) {
         if (s == null) return "";
         String x = s.replace('\u00A0', ' ');
+        x = x.replaceAll("(?s)<script.*?</script>", " ");
+        x = x.replaceAll("(?s)<style.*?</style>", " ");
+        x = x.replaceAll("<[^>]+>", " ");
         x = x.replaceAll("[\\r\\n\\t]+", " ");
         x = x.replaceAll("\\s{2,}", " ").trim();
         return x;
@@ -176,6 +170,7 @@ public class PdfRulesParser implements RulesParser {
             return true;
         }
 
+        // Inference default for lotteries
         meta.put(key + "Source", "INFERRED_DEFAULT_FALSE");
         return false;
     }
@@ -192,6 +187,7 @@ public class PdfRulesParser implements RulesParser {
             return false;
         }
 
+        // Inference default for lotteries
         meta.put(key + "Source", "INFERRED_DEFAULT_FALSE");
         return false;
     }
