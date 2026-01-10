@@ -22,14 +22,12 @@ public class IngestedRules {
 
     private LocalDate formatStartDate;
 
-    // White pool
     private Integer whitePickCount;
     private Integer whiteMin;
     private Integer whiteMax;
     private Boolean whiteOrdered;
     private Boolean whiteAllowRepeats;
 
-    // Red pool (optional)
     private Integer redPickCount;
     private Integer redMin;
     private Integer redMax;

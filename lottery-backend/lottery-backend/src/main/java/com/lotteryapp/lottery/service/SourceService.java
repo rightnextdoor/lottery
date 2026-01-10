@@ -95,7 +95,7 @@ public class SourceService {
                 .supportsJackpotAmount(bool(request.getSupportsJackpotAmount()))
                 .supportsCashValue(bool(request.getSupportsCashValue()))
                 .supportsDrawTime(bool(request.getSupportsDrawTime()))
-                .supportsTimeZone(bool(request.getSupportsTimeZone()))
+                .supportsDrawTimeZone(bool(request.getSupportsTimeZone()))
                 .build();
 
         Source saved = sourceRepository.save(source);
@@ -149,7 +149,7 @@ public class SourceService {
         if (request.getSupportsJackpotAmount() != null) source.setSupportsJackpotAmount(request.getSupportsJackpotAmount());
         if (request.getSupportsCashValue() != null) source.setSupportsCashValue(request.getSupportsCashValue());
         if (request.getSupportsDrawTime() != null) source.setSupportsDrawTime(request.getSupportsDrawTime());
-        if (request.getSupportsTimeZone() != null) source.setSupportsTimeZone(request.getSupportsTimeZone());
+        if (request.getSupportsTimeZone() != null) source.setSupportsDrawTimeZone(request.getSupportsTimeZone());
 
         Source saved = sourceRepository.save(source);
 
@@ -217,7 +217,7 @@ public class SourceService {
                 .supportsJackpotAmount(s.isSupportsJackpotAmount())
                 .supportsCashValue(s.isSupportsCashValue())
                 .supportsDrawTime(s.isSupportsDrawTime())
-                .supportsTimeZone(s.isSupportsTimeZone())
+                .supportsTimeZone(s.isSupportsDrawTimeZone())
                 .createdAt(s.getCreatedAt())
                 .updatedAt(s.getUpdatedAt())
                 .build();

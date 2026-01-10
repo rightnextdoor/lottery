@@ -9,30 +9,19 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.LinkedHashMap;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 public class PdfRulesParser implements RulesParser {
 
-    private static final Pattern CHOOSE_FROM_TO = Pattern.compile(
-            "(?i)(?:choose|pick)\\s+(\\d+)\\s+numbers?\\s+from\\s+(\\d+)\\s+(?:to|through|thru|-)\\s+(\\d+)"
-    );
+    private static final Pattern INT = Pattern.compile("\b\\d{1,4}\b");
 
-    private static final Pattern BONUS_FROM_TO = Pattern.compile(
-            "(?i)(?:choose|pick)\\s+(\\d+)\\s+(?:power\\s*ball|powerball|mega\\s*ball|megaball|bonus(?:\\s+ball)?|ball)\\s+(?:number|numbers)?\\s*from\\s+(\\d+)\\s+(?:to|through|thru|-)\\s+(\\d+)"
-    );
-
-    private static final Pattern DATE_MDY = Pattern.compile(
-            "(?i)(?:effective|beginning|starting|as of)\\s+(\\d{1,2})/(\\d{1,2})/(\\d{4})"
-    );
-    private static final Pattern DATE_MONTH_NAME = Pattern.compile(
-            "(?i)(?:effective|beginning|starting|as of)\\s+([A-Za-z]+)\\s+(\\d{1,2}),\\s*(\\d{4})"
-    );
+    private static final Pattern DATE_ISO = Pattern.compile("\b\\d{4}-\\d{2}-\\d{2}\b");
+    private static final Pattern DATE_US = Pattern.compile("\b(\\d{1,2})/(\\d{1,2})/(\\d{4})\b");
+    private static final Pattern DATE_LONG = Pattern.compile("\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\\d{1,2}),\s*(\\d{4})\b", Pattern.CASE_INSENSITIVE);
 
     @Override
     public SourceType supportedSourceType() {
@@ -41,9 +30,7 @@ public class PdfRulesParser implements RulesParser {
 
     @Override
     public boolean supports(String parserKey) {
-        if (parserKey == null) return true;
-        String k = parserKey.trim().toUpperCase(Locale.ROOT);
-        return k.contains("RULE") || k.contains("PDF");
+        return true;
     }
 
     @Override
@@ -52,149 +39,152 @@ public class PdfRulesParser implements RulesParser {
             throw new BadRequestException("Rules PDF is empty");
         }
 
-        String text = extractText(bytes);
-        String normalized = normalize(text);
-
-        Match white = findFirst(CHOOSE_FROM_TO, normalized);
-        if (white == null) {
-            throw new BadRequestException("Could not find white-ball rule pattern in PDF");
-        }
-
-        Match red = findFirst(BONUS_FROM_TO, normalized);
-
-        Map<String, Object> meta = new LinkedHashMap<>();
-
-        LocalDate formatStartDate = parseFormatStartDate(normalized, meta);
-
-        Boolean whiteOrdered = parseOrdered(normalized, meta, "whiteOrdered");
-        Boolean whiteRepeats = parseRepeats(normalized, meta, "whiteAllowRepeats");
-
-        Boolean redOrdered = parseOrdered(normalized, meta, "redOrdered");
-        Boolean redRepeats = parseRepeats(normalized, meta, "redAllowRepeats");
-
-        IngestedRules.IngestedRulesBuilder b = IngestedRules.builder()
-                .gameModeId(gameModeId)
-                .stateCode(stateCode)
-                .meta(meta)
-                .formatStartDate(formatStartDate)
-                .whitePickCount(white.pickCount)
-                .whiteMin(white.min)
-                .whiteMax(white.max)
-                .whiteOrdered(whiteOrdered)
-                .whiteAllowRepeats(whiteRepeats);
-
-        if (red != null) {
-            b.redPickCount(red.pickCount)
-                    .redMin(red.min)
-                    .redMax(red.max)
-                    .redOrdered(redOrdered)
-                    .redAllowRepeats(redRepeats);
-        }
-
-        return b.build();
-    }
-
-    private static String extractText(byte[] bytes) {
+        String text;
         try (PDDocument doc = PDDocument.load(new ByteArrayInputStream(bytes))) {
             PDFTextStripper stripper = new PDFTextStripper();
             stripper.setSortByPosition(true);
-            return stripper.getText(doc);
+            text = stripper.getText(doc);
         } catch (Exception e) {
-            throw new BadRequestException("Failed to read rules PDF");
-        }
-    }
-
-    private static String normalize(String s) {
-        if (s == null) return "";
-        String x = s.replace('\u00A0', ' ');
-        x = x.replaceAll("[\\r\\n\\t]+", " ");
-        x = x.replaceAll("\\s{2,}", " ").trim();
-        return x;
-    }
-
-    private static Match findFirst(Pattern p, String text) {
-        Matcher m = p.matcher(text);
-        if (!m.find()) return null;
-        return new Match(
-                Integer.parseInt(m.group(1)),
-                Integer.parseInt(m.group(2)),
-                Integer.parseInt(m.group(3))
-        );
-    }
-
-    private static LocalDate parseFormatStartDate(String text, Map<String, Object> meta) {
-        Matcher m1 = DATE_MDY.matcher(text);
-        if (m1.find()) {
-            int mm = Integer.parseInt(m1.group(1));
-            int dd = Integer.parseInt(m1.group(2));
-            int yy = Integer.parseInt(m1.group(3));
-            meta.put("formatStartDateMatch", "MDY");
-            return LocalDate.of(yy, mm, dd);
+            throw new BadRequestException("Failed to read rules PDF: " + e.getMessage());
         }
 
-        Matcher m2 = DATE_MONTH_NAME.matcher(text);
-        if (m2.find()) {
-            Month month = parseMonth(m2.group(1));
-            int dd = Integer.parseInt(m2.group(2));
-            int yy = Integer.parseInt(m2.group(3));
-            meta.put("formatStartDateMatch", "MONTH_NAME");
-            return LocalDate.of(yy, month, dd);
-        }
+        // Very light heuristics: we look for the first reasonable ranges and pick counts.
+        // This is intentionally conservative; if we can't determine a field, we leave it null
+        // so the RulesService can decide whether to keep the DB value.
 
-        meta.put("formatStartDateMatch", "NOT_FOUND");
+        Integer whitePick = findPickCount(text, "white", "main", "numbers");
+        Integer whiteMin = findFirstIntNear(text, "from", "between");
+        Integer whiteMax = findSecondIntNear(text, "from", "between");
+
+        Integer redPick = findPickCount(text, "red", "powerball", "mega ball", "bonus");
+        Integer redMin = null;
+        Integer redMax = null;
+
+        LocalDate formatStart = findFormatStartDate(text);
+
+        Boolean whiteOrdered = inferOrdered(text);
+        Boolean whiteRepeats = inferRepeats(text);
+
+        // often same for red; if not, keep null
+        Boolean redOrdered = whiteOrdered;
+        Boolean redRepeats = whiteRepeats;
+
+        return IngestedRules.builder()
+                .formatStartDate(formatStart)
+                .whitePickCount(whitePick)
+                .whiteMin(whiteMin)
+                .whiteMax(whiteMax)
+                .whiteOrdered(whiteOrdered)
+                .whiteAllowRepeats(whiteRepeats)
+                .redPickCount(redPick)
+                .redMin(redMin)
+                .redMax(redMax)
+                .redOrdered(redOrdered)
+                .redAllowRepeats(redRepeats)
+                .build();
+    }
+
+    private static Integer findPickCount(String text, String... keywords) {
+        if (text == null) return null;
+        String upper = text.toUpperCase(Locale.ROOT);
+
+        for (String k : keywords) {
+            int idx = upper.indexOf(k.toUpperCase(Locale.ROOT));
+            if (idx < 0) continue;
+
+            String window = upper.substring(idx, Math.min(upper.length(), idx + 200));
+            Matcher m = INT.matcher(window);
+            while (m.find()) {
+                int v = Integer.parseInt(m.group());
+                if (v >= 1 && v <= 20) return v;
+            }
+        }
         return null;
     }
 
-    private static Month parseMonth(String s) {
-        String x = s.trim().toUpperCase(Locale.ROOT);
-        return switch (x) {
-            case "JAN", "JANUARY" -> Month.JANUARY;
-            case "FEB", "FEBRUARY" -> Month.FEBRUARY;
-            case "MAR", "MARCH" -> Month.MARCH;
-            case "APR", "APRIL" -> Month.APRIL;
-            case "MAY" -> Month.MAY;
-            case "JUN", "JUNE" -> Month.JUNE;
-            case "JUL", "JULY" -> Month.JULY;
-            case "AUG", "AUGUST" -> Month.AUGUST;
-            case "SEP", "SEPT", "SEPTEMBER" -> Month.SEPTEMBER;
-            case "OCT", "OCTOBER" -> Month.OCTOBER;
-            case "NOV", "NOVEMBER" -> Month.NOVEMBER;
-            case "DEC", "DECEMBER" -> Month.DECEMBER;
-            default -> throw new BadRequestException("Unknown month name: " + s);
-        };
+    private static Integer findFirstIntNear(String text, String... keywords) {
+        Integer[] pair = findRangePair(text, keywords);
+        return pair == null ? null : pair[0];
     }
 
-    private static Boolean parseOrdered(String text, Map<String, Object> meta, String key) {
+    private static Integer findSecondIntNear(String text, String... keywords) {
+        Integer[] pair = findRangePair(text, keywords);
+        return pair == null ? null : pair[1];
+    }
+
+    private static Integer[] findRangePair(String text, String... keywords) {
+        if (text == null) return null;
         String upper = text.toUpperCase(Locale.ROOT);
 
-        if (upper.contains("IN ANY ORDER")) {
-            meta.put(key + "Source", "EXPLICIT_IN_ANY_ORDER");
-            return false;
-        }
-        if (upper.contains("EXACT ORDER") || upper.contains("IN EXACT ORDER") || upper.contains("ORDER MATTERS")) {
-            meta.put(key + "Source", "EXPLICIT_EXACT_ORDER");
-            return true;
+        for (String k : keywords) {
+            int idx = upper.indexOf(k.toUpperCase(Locale.ROOT));
+            if (idx < 0) continue;
+
+            String window = upper.substring(idx, Math.min(upper.length(), idx + 300));
+            Matcher m = INT.matcher(window);
+            Integer a = null, b = null;
+            while (m.find()) {
+                int v = Integer.parseInt(m.group());
+                if (v < 1 || v > 9999) continue;
+                if (a == null) a = v;
+                else { b = v; break; }
+            }
+            if (a != null && b != null) return new Integer[]{a, b};
         }
 
-        meta.put(key + "Source", "INFERRED_DEFAULT_FALSE");
-        return false;
+        return null;
     }
 
-    private static Boolean parseRepeats(String text, Map<String, Object> meta, String key) {
-        String upper = text.toUpperCase(Locale.ROOT);
+    private static LocalDate findFormatStartDate(String text) {
+        if (text == null) return null;
+        String t = text;
 
-        if (upper.contains("WITH REPLACEMENT") || upper.contains("REPEATS ALLOWED") || upper.contains("MAY BE REPEATED")) {
-            meta.put(key + "Source", "EXPLICIT_REPEATS_ALLOWED");
-            return true;
-        }
-        if (upper.contains("WITHOUT REPLACEMENT") || upper.contains("NO REPEATS") || upper.contains("DIFFERENT NUMBERS")) {
-            meta.put(key + "Source", "EXPLICIT_NO_REPEATS");
-            return false;
+        // try ISO
+        Matcher mi = DATE_ISO.matcher(t);
+        if (mi.find()) {
+            try { return LocalDate.parse(mi.group()); } catch (Exception ignore) {}
         }
 
-        meta.put(key + "Source", "INFERRED_DEFAULT_FALSE");
-        return false;
+        // try US
+        Matcher mu = DATE_US.matcher(t);
+        if (mu.find()) {
+            try {
+                int mm = Integer.parseInt(mu.group(1));
+                int dd = Integer.parseInt(mu.group(2));
+                int yy = Integer.parseInt(mu.group(3));
+                return LocalDate.of(yy, mm, dd);
+            } catch (Exception ignore) {}
+        }
+
+        // long date
+        Matcher ml = DATE_LONG.matcher(t);
+        if (ml.find()) {
+            try {
+                String month = ml.group(1);
+                int day = Integer.parseInt(ml.group(2));
+                int year = Integer.parseInt(ml.group(3));
+                DateTimeFormatter fmt = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
+                int monthNum = java.time.Month.valueOf(month.toUpperCase(Locale.ROOT)).getValue();
+                return LocalDate.of(year, monthNum, day);
+            } catch (Exception ignore) {}
+        }
+
+        return null;
     }
 
-    private record Match(int pickCount, int min, int max) {}
+    private static Boolean inferOrdered(String text) {
+        if (text == null) return null;
+        String u = text.toUpperCase(Locale.ROOT);
+        if (u.contains("IN ANY ORDER") || u.contains("ORDER DOES NOT MATTER")) return false;
+        if (u.contains("IN EXACT ORDER") || u.contains("IN THE EXACT ORDER")) return true;
+        return null;
+    }
+
+    private static Boolean inferRepeats(String text) {
+        if (text == null) return null;
+        String u = text.toUpperCase(Locale.ROOT);
+        if (u.contains("MAY BE REPEATED") || u.contains("CAN BE REPEATED") || u.contains("REPEATS ALLOWED")) return true;
+        if (u.contains("NO NUMBER MAY BE REPEATED") || u.contains("NOT BE REPEATED") || u.contains("REPEATS NOT ALLOWED")) return false;
+        return null;
+    }
 }

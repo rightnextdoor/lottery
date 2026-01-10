@@ -8,17 +8,14 @@ import com.lotteryapp.lottery.domain.source.Source;
 import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.*;
 import com.lotteryapp.lottery.ingestion.source.DrawSourceClient;
-import com.lotteryapp.lottery.parser.DrawParser;
-import com.lotteryapp.lottery.parser.DrawParserRegistry;
-import com.lotteryapp.lottery.parser.HtmlScheduleParser;
+import com.lotteryapp.lottery.parser.*;
 import com.lotteryapp.lottery.repository.SourceRepository;
-import com.lotteryapp.lottery.parser.RulesParser;
-import com.lotteryapp.lottery.parser.RulesParserRegistry;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class IngestionService {
@@ -30,26 +27,27 @@ public class IngestionService {
 
     private final DrawParserRegistry drawParserRegistry;
     private final RulesParserRegistry rulesParserRegistry;
-
-    private final HtmlScheduleParser htmlScheduleParser;
+    private final ScheduleParserRegistry scheduleParserRegistry;
+    private final GameListParserRegistry gameListParserRegistry;
 
     public IngestionService(
             SourceRepository sourceRepository,
             DrawSourceClient drawSourceClient,
             DrawParserRegistry drawParserRegistry,
             RulesParserRegistry rulesParserRegistry,
-            HtmlScheduleParser htmlScheduleParser
+            ScheduleParserRegistry scheduleParserRegistry,
+            GameListParserRegistry gameListParserRegistry
     ) {
         this.sourceRepository = sourceRepository;
         this.drawSourceClient = drawSourceClient;
         this.drawParserRegistry = drawParserRegistry;
         this.rulesParserRegistry = rulesParserRegistry;
-        this.htmlScheduleParser = htmlScheduleParser;
+        this.scheduleParserRegistry = scheduleParserRegistry;
+        this.gameListParserRegistry = gameListParserRegistry;
     }
 
-
     // -----------------------------
-    // DRAW
+    // DRAWS
     // -----------------------------
 
     public IngestedDraw ingestLatestDraw(Long gameModeId, String stateCode) {
@@ -144,12 +142,7 @@ public class IngestionService {
                 rules.setStateCode(normState(stateCode));
                 rules.setSourceId(src.getId());
                 rules.setFetchedAt(Instant.now());
-
-                // Merge parser meta + source meta (don’t overwrite parser findings)
-                Map<String, Object> merged = meta(src, fetched);
-                if (rules.getMeta() != null) merged.putAll(rules.getMeta());
-                rules.setMeta(merged);
-
+                rules.setMeta(meta(src, fetched));
                 return rules;
 
             } catch (Exception e) {
@@ -184,10 +177,8 @@ public class IngestionService {
                         "Accept", acceptHeaderFor(src.getSourceType())
                 ));
 
-                IngestedSchedule sched = switch (src.getSourceType()) {
-                    case HTML -> htmlScheduleParser.parse(fetched.bytes(), gameModeId, normState(stateCode));
-                    default -> throw new BadRequestException("No schedule parser implemented for sourceType=" + src.getSourceType());
-                };
+                ScheduleParser parser = scheduleParserRegistry.resolve(src.getSourceType(), src.getParserKey());
+                IngestedSchedule sched = parser.parse(fetched.bytes(), gameModeId, normState(stateCode));
 
                 sched.setGameModeId(gameModeId);
                 sched.setStateCode(normState(stateCode));
@@ -218,13 +209,50 @@ public class IngestionService {
         String st = normState(stateCode);
         if (st == null) throw new BadRequestException("stateCode is required");
 
-        // This will be wired once you add real game-list sources/parsers.
-        // For now, we fail with the correct ingestion failure shape (not BadRequest).
+        // We don't have a gameModeId yet, so we cannot use loadSources(...).
+        // Instead, we scan enabled sources for stateCode + MULTI and filter to supportsGameList.
+        List<Source> sources = sourceRepository.findAll().stream()
+                .filter(Source::isEnabled)
+                .filter(s -> {
+                    String sc = s.getStateCode();
+                    if (sc == null) return false;
+                    String norm = sc.trim().toUpperCase(Locale.ROOT);
+                    return norm.equals(st) || norm.equals(MULTI);
+                })
+                .filter(Source::isSupportsGameList)
+                .sorted(Comparator.comparingInt(Source::getPriority))
+                .collect(Collectors.toList());
+
+        List<IngestionFailure.Attempt> attempts = new ArrayList<>();
+
+        for (Source src : sources) {
+            String url = expandUrl(src.getUrlTemplate(), null);
+
+            try {
+                DrawSourceClient.FetchedContent fetched = drawSourceClient.fetch(url, Map.of(
+                        "Accept", acceptHeaderFor(src.getSourceType())
+                ));
+
+                GameListParser parser = gameListParserRegistry.resolve(src.getSourceType(), src.getParserKey());
+                IngestedGameList list = parser.parse(fetched.bytes(), st);
+
+                list.setStateCode(st);
+                list.setSourceId(src.getId());
+                list.setFetchedAt(Instant.now());
+                list.setMeta(meta(src, fetched));
+
+                return list;
+
+            } catch (Exception e) {
+                attempts.add(attempt(src, url, null, safeMsg(e)));
+            }
+        }
+
         throw new IngestionFailureException(
-                "Game list ingestion not implemented yet",
+                "All game list sources failed",
                 IngestionFailureReason.MANUAL_ENTRY_REQUIRED,
                 IngestionFailureReason.MANUAL_ENTRY_REQUIRED.name(),
-                Map.of("capability", IngestionCapability.GAME_LIST.name(), "stateCode", st)
+                buildFailureDetails(IngestionCapability.GAME_LIST.name(), null, st, attempts)
         );
     }
 
@@ -271,23 +299,21 @@ public class IngestionService {
 
     private static String acceptHeaderFor(SourceType type) {
         return switch (type) {
-            case CSV -> "text/csv,text/plain;q=0.9,*/*;q=0.8";
-            case PDF -> "application/pdf,application/octet-stream;q=0.9,*/*;q=0.8";
-            case JSON -> "application/json,*/*;q=0.8";
+            case CSV -> "text/csv,*/*;q=0.8";
+            case PDF -> "application/pdf,*/*;q=0.8";
+            case JSON, API -> "application/json,*/*;q=0.8";
             case HTML -> "text/html,*/*;q=0.8";
-            case API -> "application/json,*/*;q=0.8";
         };
     }
 
     private static Map<String, Object> meta(Source src, DrawSourceClient.FetchedContent fetched) {
         Map<String, Object> m = new LinkedHashMap<>();
-        if (fetched != null) {
-            m.put("contentType", fetched.contentType());
-            m.put("finalUrl", fetched.finalUrl());
-            m.put("statusCode", fetched.statusCode());
-        }
         m.put("sourceType", src.getSourceType().name());
         m.put("parserKey", src.getParserKey());
+        m.put("url", src.getUrlTemplate());
+        m.put("finalUrl", fetched.finalUrl());
+        m.put("statusCode", fetched.statusCode());
+        m.put("contentType", fetched.contentType());
         m.put("priority", src.getPriority());
         return m;
     }
@@ -306,6 +332,22 @@ public class IngestionService {
                 .build();
     }
 
+
+    private static java.util.Map<String, Object> buildFailureDetails(
+            String capability,
+            Long gameModeId,
+            String stateCode,
+            java.util.List<IngestionFailure.Attempt> attempts
+    ) {
+        java.util.Map<String, Object> details = new java.util.LinkedHashMap<>();
+        if (capability != null && !capability.isBlank()) details.put("capability", capability);
+        if (gameModeId != null) details.put("gameModeId", gameModeId);
+        String st = normState(stateCode);
+        if (st != null) details.put("stateCode", st);
+        if (attempts != null && !attempts.isEmpty()) details.put("attempts", attempts);
+        return details;
+    }
+
     private static IngestionFailureException ingestionFailure(
             String message,
             String capability,
@@ -313,49 +355,18 @@ public class IngestionService {
             String stateCode,
             List<IngestionFailure.Attempt> attempts
     ) {
-        IngestionFailureReason reason = inferReason(attempts);
-
-        Map<String, Object> details = new LinkedHashMap<>();
-        details.put("capability", capability);
-        details.put("gameModeId", gameModeId);
-        details.put("stateCode", normState(stateCode));
-        details.put("attempts", attempts);
-
-        return new IngestionFailureException(message, reason, reason.name(), details);
-    }
-
-    private static IngestionFailureReason inferReason(List<IngestionFailure.Attempt> attempts) {
-        if (attempts == null || attempts.isEmpty()) {
-            return IngestionFailureReason.MANUAL_ENTRY_REQUIRED;
-        }
-
-        for (IngestionFailure.Attempt a : attempts) {
-            Integer status = a.getStatusCode();
-            if (status != null && (status == 429 || status >= 500)) {
-                return IngestionFailureReason.CHECK_BACK_LATER;
-            }
-
-            String msg = a.getErrorMessage();
-            if (msg == null) continue;
-            String m = msg.toLowerCase(Locale.ROOT);
-
-            if (m.contains("timeout")
-                    || m.contains("timed out")
-                    || m.contains("connection")
-                    || m.contains("download failed")
-                    || m.contains("too many redirects")
-                    || m.contains("only https")
-                    || m.contains("host not allowed")) {
-                return IngestionFailureReason.CHECK_BACK_LATER;
-            }
-        }
-
-        return IngestionFailureReason.MANUAL_ENTRY_REQUIRED;
+        return new IngestionFailureException(
+                message,
+                IngestionFailureReason.CHECK_BACK_LATER,
+                IngestionFailureReason.CHECK_BACK_LATER.name(),
+                buildFailureDetails(capability, gameModeId, stateCode, attempts)
+        );
     }
 
     private static String safeMsg(Exception e) {
-        if (e == null) return "unknown";
-        String m = e.getMessage();
-        return (m == null || m.isBlank()) ? e.getClass().getSimpleName() : m;
+        if (e == null) return null;
+        String msg = e.getMessage();
+        if (msg == null || msg.isBlank()) return e.getClass().getSimpleName();
+        return msg.length() > 300 ? msg.substring(0, 300) : msg;
     }
 }

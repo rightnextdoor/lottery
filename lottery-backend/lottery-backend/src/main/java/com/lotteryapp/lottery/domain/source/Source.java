@@ -29,8 +29,10 @@ public class Source {
     @Column(name = "state_code", nullable = false, length = 16)
     private String stateCode;
 
+
     @Column(name = "game_mode_id", nullable = false)
     private Long gameModeId;
+
 
     @Column(name = "priority", nullable = false)
     private int priority;
@@ -38,12 +40,15 @@ public class Source {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+
     @Enumerated(EnumType.STRING)
     @Column(name = "source_type", nullable = false, length = 16)
     private SourceType sourceType;
 
+
     @Column(name = "parser_key", nullable = false, length = 80)
     private String parserKey;
+
 
     @Column(name = "url_template", nullable = false, length = 1000)
     private String urlTemplate;
@@ -77,8 +82,8 @@ public class Source {
     @Column(name = "supports_draw_time", nullable = false)
     private boolean supportsDrawTime;
 
-    @Column(name = "supports_time_zone", nullable = false)
-    private boolean supportsTimeZone;
+    @Column(name = "supports_draw_time_zone", nullable = false)
+    private boolean supportsDrawTimeZone;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

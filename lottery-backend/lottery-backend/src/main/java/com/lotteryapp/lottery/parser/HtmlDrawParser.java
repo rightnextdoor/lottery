@@ -5,9 +5,9 @@ import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.IngestedDraw;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,18 +15,16 @@ import java.util.regex.Pattern;
 @Component
 public class HtmlDrawParser implements DrawParser {
 
-    private static final Pattern DATE_US = Pattern.compile("\\b(\\d{1,2})/(\\d{1,2})/(\\d{4})\\b");
-    private static final Pattern DATE_ISO = Pattern.compile("\\b(\\d{4})-(\\d{2})-(\\d{2})\\b");
-    private static final Pattern INT = Pattern.compile("\\b\\d{1,2}\\b");
+    private static final Pattern DATE = Pattern.compile("\\b\\d{4}-\\d{2}-\\d{2}\\b");
+    private static final Pattern NUMBERS = Pattern.compile("\\b\\d{1,2}\\b");
+    private static final Pattern MULT = Pattern.compile("\b(multiplier|powerplay|power play|megaplier)\b[^0-9]{0,30}(\\d{1,2})", Pattern.CASE_INSENSITIVE);
 
-    private static final Pattern MONEY_DOLLAR = Pattern.compile(
-            "\\$\\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\\.[0-9]+)?|[0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION|B|M)?",
-            Pattern.CASE_INSENSITIVE
-    );
-    private static final Pattern MONEY_WORD = Pattern.compile(
-            "\\b([0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION)\\b",
-            Pattern.CASE_INSENSITIVE
-    );
+    private static final Pattern JACKPOT = Pattern.compile("\b(jackpot|estimated jackpot)\b[^$0-9]{0,40}\\$?\s*([0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern CASH = Pattern.compile("\b(cash value|estimated cash value|cash)\b[^$0-9]{0,40}\\$?\s*([0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)", Pattern.CASE_INSENSITIVE);
+
+    private static final Pattern TIME_12H = Pattern.compile("\b(1[0-2]|0?[1-9]):([0-5]\\d)\s*(AM|PM)\b", Pattern.CASE_INSENSITIVE);
+    private static final Pattern IANA_TZ = Pattern.compile("\b[A-Za-z]+/[A-Za-z_]+\b");
+    private static final Pattern TZ_ABBR = Pattern.compile("\b(ET|EST|EDT|CT|CST|CDT|MT|MST|MDT|PT|PST|PDT)\b");
 
     @Override
     public SourceType supportedSourceType() {
@@ -35,104 +33,117 @@ public class HtmlDrawParser implements DrawParser {
 
     @Override
     public boolean supports(String parserKey) {
-        if (parserKey == null) return true;
-        return parserKey.trim().toUpperCase(Locale.ROOT).contains("HTML");
+        // generic
+        return true;
     }
 
     @Override
     public List<IngestedDraw> parse(byte[] bytes, Long gameModeId, String stateCode) {
-        if (bytes == null || bytes.length == 0) throw new BadRequestException("HTML response was empty");
+        if (bytes == null || bytes.length == 0) {
+            throw new BadRequestException("HTML is empty");
+        }
 
         String html = new String(bytes, StandardCharsets.UTF_8);
-        String text = html.replaceAll("<[^>]*>", " ").replaceAll("\\s{2,}", " ").trim();
+        // keep original for regex (some sites embed JSON inside HTML)
+        String text = html.replaceAll("<[^>]*>", " ");
 
-        String[] chunks = text.split("(?i)draw|results|winning");
+        List<LocalDate> dates = new ArrayList<>();
+        Matcher dm = DATE.matcher(text);
+        while (dm.find()) {
+            try { dates.add(LocalDate.parse(dm.group())); } catch (Exception ignore) {}
+        }
+
+        // naive: find number groups separated by 5+ numbers; we keep compatibility with existing behavior:
+        List<List<Integer>> numberGroups = new ArrayList<>();
+        List<Integer> current = new ArrayList<>();
+        Matcher nm = NUMBERS.matcher(text);
+        while (nm.find()) {
+            int v = Integer.parseInt(nm.group());
+            current.add(v);
+            if (current.size() >= 6) { // enough for common games; flush in chunks of 6
+                numberGroups.add(new ArrayList<>(current.subList(0, 6)));
+                current.clear();
+            }
+        }
+
+        Integer mult = parseMultiplier(text);
+
+        Long jackpot = parseMoneyByPattern(text, JACKPOT);
+        Long cash = parseMoneyByPattern(text, CASH);
+
+        LocalTime drawTime = parseTime(text);
+        String tz = parseTimeZoneId(text);
+
+        int count = Math.min(dates.size(), numberGroups.size());
         List<IngestedDraw> out = new ArrayList<>();
 
-        for (String chunk : chunks) {
-            LocalDate date = parseDate(chunk);
-            if (date == null) continue;
-
-            List<Integer> nums = parseInts(chunk);
-            if (nums.size() < 6) continue;
-
-            nums = nums.subList(0, 6);
-            List<Integer> whites = nums.subList(0, 5);
-            List<Integer> reds = List.of(nums.get(5));
-
-            BigDecimal jackpot = parseMoneyNear(chunk, "JACKPOT");
-            BigDecimal cash = parseMoneyNear(chunk, "CASH");
+        for (int i = 0; i < count; i++) {
+            List<Integer> nums = numberGroups.get(i);
+            List<Integer> whites = nums.subList(0, Math.min(5, nums.size()));
+            List<Integer> reds = nums.size() > 5 ? List.of(nums.get(5)) : List.of();
 
             out.add(IngestedDraw.builder()
-                    .gameModeId(gameModeId)
-                    .stateCode(stateCode)
-                    .drawDate(date)
+                    .drawDate(dates.get(i))
                     .whiteNumbers(new ArrayList<>(whites))
                     .redNumbers(new ArrayList<>(reds))
+                    .multiplier(mult)
                     .jackpotAmount(jackpot)
                     .cashValue(cash)
+                    .drawTimeLocal(drawTime)
+                    .drawTimeZoneId(tz)
                     .build());
         }
 
-        if (out.isEmpty()) throw new BadRequestException("HTML parsed but no draws were recognized");
+        if (out.isEmpty()) {
+            throw new BadRequestException("HTML parsed but no draws were recognized");
+        }
+
         return out;
     }
 
-    private static LocalDate parseDate(String s) {
-        Matcher m1 = DATE_US.matcher(s);
-        if (m1.find()) {
-            int mm = Integer.parseInt(m1.group(1));
-            int dd = Integer.parseInt(m1.group(2));
-            int yy = Integer.parseInt(m1.group(3));
-            return LocalDate.of(yy, mm, dd);
-        }
-        Matcher m2 = DATE_ISO.matcher(s);
-        if (m2.find()) {
-            int yy = Integer.parseInt(m2.group(1));
-            int mm = Integer.parseInt(m2.group(2));
-            int dd = Integer.parseInt(m2.group(3));
-            return LocalDate.of(yy, mm, dd);
+    private static Integer parseMultiplier(String s) {
+        if (s == null) return null;
+        Matcher m = MULT.matcher(s);
+        if (m.find()) {
+            try { return Integer.parseInt(m.group(2)); } catch (Exception ignore) {}
         }
         return null;
     }
 
-    private static List<Integer> parseInts(String s) {
-        Matcher m = INT.matcher(s);
-        List<Integer> out = new ArrayList<>();
-        while (m.find()) out.add(Integer.parseInt(m.group()));
-        return out;
+    private static Long parseMoneyByPattern(String s, Pattern p) {
+        if (s == null) return null;
+        Matcher m = p.matcher(s);
+        if (!m.find()) return null;
+        try {
+            return Long.parseLong(m.group(2).replace(",", ""));
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 
-    private static BigDecimal parseMoneyNear(String chunk, String keywordUpper) {
-        if (chunk == null) return null;
-        String upper = chunk.toUpperCase(Locale.ROOT);
-        int idx = upper.indexOf(keywordUpper);
-        if (idx < 0) return null;
-
-        int start = Math.max(0, idx - 80);
-        int end = Math.min(chunk.length(), idx + 200);
-        String window = chunk.substring(start, end);
-
-        Matcher md = MONEY_DOLLAR.matcher(window);
-        if (md.find()) return scaleMoney(md.group(1), md.group(2));
-
-        Matcher mw = MONEY_WORD.matcher(window);
-        if (mw.find()) return scaleMoney(mw.group(1), mw.group(2));
-
+    private static LocalTime parseTime(String s) {
+        if (s == null) return null;
+        Matcher m = TIME_12H.matcher(s);
+        if (m.find()) {
+            int hh = Integer.parseInt(m.group(1));
+            int mm = Integer.parseInt(m.group(2));
+            String ap = m.group(3).toUpperCase(Locale.ROOT);
+            if ("PM".equals(ap) && hh != 12) hh += 12;
+            if ("AM".equals(ap) && hh == 12) hh = 0;
+            return LocalTime.of(hh, mm);
+        }
         return null;
     }
 
-    private static BigDecimal scaleMoney(String number, String scale) {
-        if (number == null) return null;
-        String n = number.replace(",", "").trim();
-        BigDecimal base;
-        try { base = new BigDecimal(n); } catch (Exception e) { return null; }
+    private static String parseTimeZoneId(String s) {
+        if (s == null) return null;
 
-        if (scale == null || scale.isBlank()) return base;
+        Matcher mi = IANA_TZ.matcher(s);
+        if (mi.find()) return mi.group(0);
 
-        String sc = scale.trim().toUpperCase(Locale.ROOT);
-        if (sc.startsWith("B")) return base.multiply(BigDecimal.valueOf(1_000_000_000L));
-        if (sc.startsWith("M")) return base.multiply(BigDecimal.valueOf(1_000_000L));
-        return base;
+        Matcher ma = TZ_ABBR.matcher(s.toUpperCase(Locale.ROOT));
+        if (ma.find()) return ma.group(1);
+
+        return null;
     }
 }

@@ -7,10 +7,8 @@ import com.lotteryapp.lottery.domain.source.SourceType;
 import com.lotteryapp.lottery.ingestion.model.IngestedDraw;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,24 +17,9 @@ import java.util.regex.Pattern;
 public class JsonDrawParser implements DrawParser {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final Pattern INT = Pattern.compile("\\d+");
 
-    private static final Pattern MONEY_DOLLAR = Pattern.compile(
-            "\\$\\s*([0-9]{1,3}(?:,[0-9]{3})*(?:\\.[0-9]+)?|[0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION|B|M)?",
-            Pattern.CASE_INSENSITIVE
-    );
-    private static final Pattern MONEY_WORD = Pattern.compile(
-            "\\b([0-9]+(?:\\.[0-9]+)?)\\s*(BILLION|MILLION)\\b",
-            Pattern.CASE_INSENSITIVE
-    );
-
-    private static final List<DateTimeFormatter> DATE_FORMATS = List.of(
-            DateTimeFormatter.ISO_LOCAL_DATE,
-            DateTimeFormatter.ofPattern("M/d/yyyy"),
-            DateTimeFormatter.ofPattern("MM/dd/yyyy"),
-            DateTimeFormatter.ofPattern("M-d-yyyy"),
-            DateTimeFormatter.ofPattern("MM-d-yyyy")
-    );
+    // money like 100000000 or "$100,000,000"
+    private static final Pattern MONEY = Pattern.compile("\\$?\s*([0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)");
 
     @Override
     public SourceType supportedSourceType() {
@@ -45,244 +28,200 @@ public class JsonDrawParser implements DrawParser {
 
     @Override
     public boolean supports(String parserKey) {
-        if (parserKey == null) return true;
-        return parserKey.trim().toUpperCase(Locale.ROOT).contains("JSON");
+        return true;
     }
 
     @Override
     public List<IngestedDraw> parse(byte[] bytes, Long gameModeId, String stateCode) {
-        if (bytes == null || bytes.length == 0) throw new BadRequestException("JSON response was empty");
+        if (bytes == null || bytes.length == 0) {
+            throw new BadRequestException("Draw JSON is empty");
+        }
 
-        JsonNode root;
         try {
-            root = MAPPER.readTree(bytes);
-        } catch (Exception e) {
-            String preview = new String(bytes, 0, Math.min(bytes.length, 300), StandardCharsets.UTF_8);
-            throw new BadRequestException("Failed to parse JSON", Map.of("preview", preview));
-        }
+            JsonNode root = MAPPER.readTree(bytes);
 
-        JsonNode array = findFirstArray(root);
-        if (array == null || !array.isArray()) {
-            throw new BadRequestException("JSON does not contain an array of draws");
-        }
-
-        List<IngestedDraw> out = new ArrayList<>();
-        for (JsonNode row : array) {
-            if (!row.isObject()) continue;
-
-            LocalDate date = parseDate(
-                    text(row, "draw_date"),
-                    text(row, "drawDate"),
-                    text(row, "date")
-            );
-            if (date == null) continue;
-
-            Integer mult = parseInt(text(row, "multiplier"), text(row, "power_play"), text(row, "megaplier"));
-
-            Integer bonus = parseInt(
-                    text(row, "powerball"),
-                    text(row, "power_ball"),
-                    text(row, "mega_ball"),
-                    text(row, "megaball"),
-                    text(row, "bonus"),
-                    text(row, "bonus_ball")
-            );
-
-            List<Integer> nums = parseInts(text(row, "winning_numbers"), text(row, "winningNumbers"), text(row, "numbers"));
-            if (nums.isEmpty()) nums = parseInts(row.toString());
-            if (nums.isEmpty()) continue;
-
-            List<Integer> whites;
-            List<Integer> reds = null;
-
-            if (bonus != null) {
-                reds = List.of(bonus);
-                if (!nums.isEmpty() && Objects.equals(nums.get(nums.size() - 1), bonus)) {
-                    nums = nums.subList(0, nums.size() - 1);
-                }
-            }
-
-            if (nums.size() >= 5) {
-                whites = nums.subList(0, 5);
-                if (reds == null && nums.size() >= 6) {
-                    reds = List.of(nums.get(5));
-                }
+            List<JsonNode> nodes = new ArrayList<>();
+            if (root.isArray()) {
+                root.forEach(nodes::add);
+            } else if (root.has("draws") && root.get("draws").isArray()) {
+                root.get("draws").forEach(nodes::add);
+            } else if (root.has("results") && root.get("results").isArray()) {
+                root.get("results").forEach(nodes::add);
             } else {
-                whites = nums;
+                nodes.add(root);
             }
 
-            BigDecimal jackpot = parseMoney(
-                    row,
-                    "jackpot", "jackpot_amount", "jackpotAmount", "estimated_jackpot", "estimatedJackpot",
-                    "annuity", "annuity_amount", "annuityAmount"
-            );
+            List<IngestedDraw> out = new ArrayList<>();
+            for (JsonNode n : nodes) {
+                LocalDate date = readDate(n, "drawDate", "draw_date", "date");
+                if (date == null) continue;
 
-            BigDecimal cash = parseMoney(
-                    row,
-                    "cash_value", "cashValue", "cash", "cash_option", "cashOption",
-                    "lump_sum", "lumpSum", "lumpsum"
-            );
+                List<Integer> white = readIntArray(n, "whiteNumbers", "white_numbers", "numbers", "winningNumbers");
+                List<Integer> red = readIntArray(n, "redNumbers", "red_numbers", "powerball", "megaBall", "bonus");
 
-            out.add(IngestedDraw.builder()
-                    .gameModeId(gameModeId)
-                    .stateCode(stateCode)
-                    .drawDate(date)
-                    .whiteNumbers(new ArrayList<>(whites))
-                    .redNumbers(reds == null ? null : new ArrayList<>(reds))
-                    .multiplier(mult)
-                    .jackpotAmount(jackpot)
-                    .cashValue(cash)
-                    .build());
-        }
+                Integer mult = readInt(n, "multiplier", "powerPlay", "power_play", "megaplier");
 
-        if (out.isEmpty()) throw new BadRequestException("JSON parsed but no draws recognized");
-        return out;
-    }
+                Long jackpot = readMoney(n, "jackpotAmount", "jackpot_amount", "jackpot", "estimatedJackpot", "estimated_jackpot");
+                Long cash = readMoney(n, "cashValue", "cash_value", "cash", "estimatedCashValue", "estimated_cash_value");
 
-    private static JsonNode findFirstArray(JsonNode root) {
-        if (root == null) return null;
-        if (root.isArray()) return root;
+                LocalTime drawTime = readTime(n, "drawTimeLocal", "draw_time_local", "drawTime", "draw_time", "time");
+                String tz = readText(n, "drawTimeZoneId", "draw_time_zone_id", "timeZoneId", "time_zone_id", "timezone", "timeZone");
 
-        if (root.isObject()) {
-            for (String k : List.of("data", "results", "items")) {
-                JsonNode n = root.get(k);
-                if (n != null && n.isArray()) return n;
+                out.add(IngestedDraw.builder()
+                        .drawDate(date)
+                        .whiteNumbers(white)
+                        .redNumbers(red)
+                        .multiplier(mult)
+                        .jackpotAmount(jackpot)
+                        .cashValue(cash)
+                        .drawTimeLocal(drawTime)
+                        .drawTimeZoneId(tz)
+                        .build());
             }
-            Iterator<Map.Entry<String, JsonNode>> it = root.fields();
-            while (it.hasNext()) {
-                Map.Entry<String, JsonNode> e = it.next();
-                if (e.getValue() != null && e.getValue().isArray()) return e.getValue();
+
+            if (out.isEmpty()) {
+                throw new BadRequestException("Parsed draw JSON but no draws found");
             }
+
+            return out;
+        } catch (BadRequestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BadRequestException("Failed to parse draw JSON: " + e.getMessage());
         }
-        return null;
     }
 
-    private static String text(JsonNode node, String field) {
-        JsonNode v = node.get(field);
-        if (v == null || v.isNull()) return null;
-        return v.asText(null);
-    }
-
-    private static LocalDate parseDate(String... candidates) {
-        for (String s : candidates) {
-            LocalDate d = tryParseDate(s);
-            if (d != null) return d;
-        }
-        return null;
-    }
-
-    private static LocalDate tryParseDate(String s) {
-        if (s == null || s.isBlank()) return null;
-        String t = s.trim();
-        for (DateTimeFormatter f : DATE_FORMATS) {
-            try { return LocalDate.parse(t, f); } catch (Exception ignored) { }
-        }
-        return null;
-    }
-
-    private static Integer parseInt(String... candidates) {
-        for (String s : candidates) {
+    private static LocalDate readDate(JsonNode n, String... keys) {
+        for (String k : keys) {
+            JsonNode v = n.get(k);
+            if (v == null || v.isNull()) continue;
+            String s = v.asText(null);
             if (s == null || s.isBlank()) continue;
-            try { return Integer.parseInt(s.trim()); } catch (NumberFormatException ignored) { }
-        }
-        return null;
-    }
-
-    private static List<Integer> parseInts(String... candidates) {
-        for (String s : candidates) {
-            List<Integer> nums = parseIntsOne(s);
-            if (!nums.isEmpty()) return nums;
-        }
-        return List.of();
-    }
-
-    private static List<Integer> parseIntsOne(String s) {
-        if (s == null) return List.of();
-        Matcher m = INT.matcher(s);
-        List<Integer> out = new ArrayList<>();
-        while (m.find()) out.add(Integer.parseInt(m.group()));
-        return out;
-    }
-
-    private static BigDecimal parseMoney(JsonNode row, String... fields) {
-        for (String f : fields) {
-            JsonNode v = row.get(f);
-            BigDecimal m = parseMoneyNode(v);
-            if (m != null) return m;
-        }
-
-        // Fallback: scan likely keys
-        Iterator<Map.Entry<String, JsonNode>> it = row.fields();
-        while (it.hasNext()) {
-            Map.Entry<String, JsonNode> e = it.next();
-            String key = e.getKey() == null ? "" : e.getKey().toLowerCase(Locale.ROOT);
-            if (key.contains("jackpot") || key.contains("cash") || key.contains("lump") || key.contains("annuity")) {
-                BigDecimal m = parseMoneyNode(e.getValue());
-                if (m != null) return m;
+            try {
+                return LocalDate.parse(s.trim());
+            } catch (Exception ignore) {
             }
         }
         return null;
     }
 
-    private static BigDecimal parseMoneyNode(JsonNode v) {
-        if (v == null || v.isNull()) return null;
+    private static List<Integer> readIntArray(JsonNode n, String... keys) {
+        for (String k : keys) {
+            JsonNode v = n.get(k);
+            if (v == null || v.isNull()) continue;
 
-        if (v.isNumber()) {
-            try { return new BigDecimal(v.asText()); } catch (Exception ignored) { return null; }
-        }
+            // sometimes it's a string "1 2 3 4 5"
+            if (v.isTextual()) {
+                String s = v.asText("");
+                List<Integer> nums = extractInts(s);
+                if (!nums.isEmpty()) return nums;
+            }
 
-        if (v.isTextual()) {
-            return parseMoneyText(v.asText());
-        }
-
-        if (v.isObject()) {
-            // try common nested patterns: { amount: "...", cash: "..." }
-            Iterator<Map.Entry<String, JsonNode>> it = v.fields();
-            while (it.hasNext()) {
-                Map.Entry<String, JsonNode> e = it.next();
-                BigDecimal m = parseMoneyNode(e.getValue());
-                if (m != null) return m;
+            if (v.isArray()) {
+                List<Integer> out = new ArrayList<>();
+                for (JsonNode item : v) {
+                    if (item == null || item.isNull()) continue;
+                    if (item.canConvertToInt()) out.add(item.asInt());
+                    else if (item.isTextual()) {
+                        try { out.add(Integer.parseInt(item.asText().trim())); } catch (Exception ignore) {}
+                    }
+                }
+                if (!out.isEmpty()) return out;
             }
         }
+        return new ArrayList<>();
+    }
 
+    private static Integer readInt(JsonNode n, String... keys) {
+        for (String k : keys) {
+            JsonNode v = n.get(k);
+            if (v == null || v.isNull()) continue;
+            if (v.canConvertToInt()) return v.asInt();
+            if (v.isTextual()) {
+                try { return Integer.parseInt(v.asText().trim()); } catch (Exception ignore) {}
+            }
+        }
         return null;
     }
 
-    private static BigDecimal parseMoneyText(String s) {
+    private static String readText(JsonNode n, String... keys) {
+        for (String k : keys) {
+            JsonNode v = n.get(k);
+            if (v == null || v.isNull()) continue;
+            String s = v.asText(null);
+            if (s != null && !s.isBlank()) return s.trim();
+        }
+        return null;
+    }
+
+    private static Long readMoney(JsonNode n, String... keys) {
+        for (String k : keys) {
+            JsonNode v = n.get(k);
+            if (v == null || v.isNull()) continue;
+            if (v.isNumber()) return v.asLong();
+            if (v.isTextual()) {
+                Long parsed = parseMoney(v.asText());
+                if (parsed != null) return parsed;
+            }
+        }
+        return null;
+    }
+
+    private static LocalTime readTime(JsonNode n, String... keys) {
+        for (String k : keys) {
+            JsonNode v = n.get(k);
+            if (v == null || v.isNull()) continue;
+            String s = v.asText(null);
+            LocalTime t = parseTime(s);
+            if (t != null) return t;
+        }
+        return null;
+    }
+
+    private static Long parseMoney(String s) {
+        if (s == null) return null;
+        Matcher m = MONEY.matcher(s.replaceAll("\s+", " ").trim());
+        if (!m.find()) return null;
+        try {
+            return Long.parseLong(m.group(1).replace(",", ""));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static LocalTime parseTime(String s) {
         if (s == null) return null;
         String t = s.trim();
         if (t.isBlank()) return null;
 
-        Matcher md = MONEY_DOLLAR.matcher(t);
-        if (md.find()) {
-            return scaleMoney(md.group(1), md.group(2));
-        }
+        // ISO HH:mm[:ss]
+        try {
+            if (t.length() >= 5 && t.charAt(2) == ':') {
+                return LocalTime.parse(t.length() > 8 ? t.substring(0, 8) : t);
+            }
+        } catch (Exception ignore) {}
 
-        Matcher mw = MONEY_WORD.matcher(t);
-        if (mw.find()) {
-            return scaleMoney(mw.group(1), mw.group(2));
-        }
-
-        // digits-only fallback
-        String digits = t.replaceAll("[,\\s]", "");
-        if (digits.matches("\\d+(?:\\.\\d+)?")) {
-            try { return new BigDecimal(digits); } catch (Exception ignored) { }
+        // 12h like 10:59 PM
+        Matcher m = Pattern.compile("\b(1[0-2]|0?[1-9]):([0-5]\\d)\s*(AM|PM)\b", Pattern.CASE_INSENSITIVE).matcher(t);
+        if (m.find()) {
+            int hh = Integer.parseInt(m.group(1));
+            int mm = Integer.parseInt(m.group(2));
+            String ap = m.group(3).toUpperCase(Locale.ROOT);
+            if ("PM".equals(ap) && hh != 12) hh += 12;
+            if ("AM".equals(ap) && hh == 12) hh = 0;
+            return LocalTime.of(hh, mm);
         }
 
         return null;
     }
 
-    private static BigDecimal scaleMoney(String number, String scale) {
-        if (number == null) return null;
-        String n = number.replace(",", "").trim();
-        BigDecimal base;
-        try { base = new BigDecimal(n); } catch (Exception e) { return null; }
-
-        if (scale == null || scale.isBlank()) return base;
-
-        String sc = scale.trim().toUpperCase(Locale.ROOT);
-        if (sc.startsWith("B")) return base.multiply(BigDecimal.valueOf(1_000_000_000L));
-        if (sc.startsWith("M")) return base.multiply(BigDecimal.valueOf(1_000_000L));
-        return base;
+    private static List<Integer> extractInts(String s) {
+        if (s == null) return List.of();
+        Matcher m = Pattern.compile("\b\\d{1,2}\b").matcher(s);
+        List<Integer> out = new ArrayList<>();
+        while (m.find()) {
+            try { out.add(Integer.parseInt(m.group(0))); } catch (Exception ignore) {}
+        }
+        return out;
     }
 }

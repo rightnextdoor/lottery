@@ -14,8 +14,6 @@ public class IngestionFailure {
 
     private String message;
 
-    private String reasonCode;
-
     private Map<String, Object> details;
 
     private List<Attempt> attempts;

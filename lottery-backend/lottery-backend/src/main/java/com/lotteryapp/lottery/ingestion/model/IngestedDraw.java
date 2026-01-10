@@ -2,9 +2,9 @@ package com.lotteryapp.lottery.ingestion.model;
 
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +29,8 @@ public class IngestedDraw {
 
     private Integer multiplier;
 
-    private BigDecimal jackpotAmount;
-    private BigDecimal cashValue;
+    private Long jackpotAmount;
+    private Long cashValue;
+    private LocalTime drawTimeLocal;
+    private String drawTimeZoneId;
 }

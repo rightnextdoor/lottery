@@ -61,6 +61,11 @@ public class DrawResult {
     @Builder.Default
     private List<DrawPick> picks = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "origin", nullable = false, length = 16)
+    @Builder.Default
+    private DrawOrigin origin = DrawOrigin.OFFICIAL;
+
     @PrePersist
     void prePersist() {
         Instant now = Instant.now();
