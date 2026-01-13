@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lotteryapp.common.exception.BadRequestException;
 import com.lotteryapp.common.exception.NotFoundException;
+import com.lotteryapp.lottery.application.numbers.NumberBallLifecycleService;
 import com.lotteryapp.lottery.domain.draw.*;
 import com.lotteryapp.lottery.domain.gamemode.DrawDay;
 import com.lotteryapp.lottery.domain.gamemode.GameMode;
 import com.lotteryapp.lottery.domain.gamemode.GameModeStatus;
+import com.lotteryapp.lottery.domain.numbers.NumberBall;
 import com.lotteryapp.lottery.dto.common.ApiResponse;
 import com.lotteryapp.lottery.dto.common.PageResponse;
 import com.lotteryapp.lottery.dto.draw.request.*;
@@ -39,18 +41,25 @@ public class DrawService {
     private final DrawConflictRepository drawConflictRepository;
     private final IngestionService ingestionService;
 
+    private final NumberBallService numberBallService;
+    private final NumberBallLifecycleService numberBallLifecycleService;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public DrawService(
             GameModeRepository gameModeRepository,
             DrawResultRepository drawResultRepository,
             DrawConflictRepository drawConflictRepository,
-            IngestionService ingestionService
+            IngestionService ingestionService,
+            NumberBallService numberBallService,
+            NumberBallLifecycleService numberBallLifecycleService
     ) {
         this.gameModeRepository = gameModeRepository;
         this.drawResultRepository = drawResultRepository;
         this.drawConflictRepository = drawConflictRepository;
         this.ingestionService = ingestionService;
+        this.numberBallService = numberBallService;
+        this.numberBallLifecycleService = numberBallLifecycleService;
     }
 
     @Transactional
@@ -118,13 +127,28 @@ public class DrawService {
         LocalDate end = computeLatestExpectedDrawDate(mode);
 
         // For initial history, we ingest history if DB empty in this range.
-        List<DrawResult> existing = drawResultRepository.findByGameModeIdAndDrawDateBetweenOrderByDrawDateAsc(mode.getId(), start, end);
+        List<DrawResult> existing = drawResultRepository
+                .findByGameModeIdAndDrawDateBetweenOrderByDrawDateAsc(mode.getId(), start, end);
+
         if (existing.isEmpty()) {
             List<IngestedDraw> history = ingestionService.ingestDrawHistory(mode.getId(), request.getStateCode());
+
+            List<DrawResult> updatedDraws = new ArrayList<>();
+
             for (IngestedDraw d : history) {
-                saveOfficialFromIngestion(mode, d);
+                DrawResult saved = saveOfficialFromIngestion(mode, d);
+
+                if (saved != null && saved.getOrigin() == DrawOrigin.OFFICIAL) {
+                    updatedDraws.add(saved);
+                }
             }
-            existing = drawResultRepository.findByGameModeIdAndDrawDateBetweenOrderByDrawDateAsc(mode.getId(), start, end);
+
+            if (!updatedDraws.isEmpty()) {
+                onDrawActiveForNumberBalls(mode, updatedDraws);
+            }
+
+            existing = drawResultRepository
+                    .findByGameModeIdAndDrawDateBetweenOrderByDrawDateAsc(mode.getId(), start, end);
         }
 
         DrawBundleResponse bundle = DrawBundleResponse.builder()
@@ -133,6 +157,36 @@ public class DrawService {
                 .build();
 
         return ApiResponse.ok("Current format draws loaded", bundle);
+    }
+
+
+    public void syncCurrentFormatHistoryForRebuild(GameMode mode) {
+        if (mode == null || mode.getId() == null) {
+            throw new BadRequestException("GameMode is required");
+        }
+        if (mode.getRules() == null || mode.getRules().getFormatStartDate() == null) {
+            throw new BadRequestException("Rules.formatStartDate is required for rebuild draw sync");
+        }
+        if (mode.getJurisdiction() == null || mode.getJurisdiction().getCode() == null) {
+            throw new BadRequestException("GameMode jurisdiction code (stateCode) is required for rebuild draw sync");
+        }
+
+        String stateCode = mode.getJurisdiction().getCode();
+        LocalDate start = mode.getRules().getFormatStartDate();
+        LocalDate end = LocalDate.now();
+
+        List<IngestedDraw> ingestedHistory = ingestionService.ingestDrawHistory(mode.getId(), stateCode);
+        for (IngestedDraw ingested : ingestedHistory) {
+            if (ingested == null || ingested.getDrawDate() == null) continue;
+            if (ingested.getDrawDate().isBefore(start) || ingested.getDrawDate().isAfter(end)) continue;
+
+            saveOfficialFromIngestion(mode, ingested);
+        }
+
+        List<DrawResult> draws = drawResultRepository
+                .findByGameModeIdAndDrawDateBetweenOrderByDrawDateAsc(mode.getId(), start, end);
+
+        onDrawActiveForNumberBalls(mode, draws);
     }
 
     public ApiResponse<DrawScheduleResponse> getSchedule(GetDrawScheduleRequest request) {
@@ -192,6 +246,10 @@ public class DrawService {
 
             DrawResult saved = saveOfficialFromIngestion(mode, ingested);
 
+            if (saved != null && saved.getOrigin() == DrawOrigin.OFFICIAL) {
+                onDrawActiveForNumberBalls(mode, List.of(saved));
+            }
+
             DrawBundleResponse bundle = DrawBundleResponse.builder()
                     .gameMode(toGameModeResponse(mode))
                     .draw(toDrawResponse(saved))
@@ -230,8 +288,6 @@ public class DrawService {
         boolean differsFromPriorOfficial = (priorOrigin == DrawOrigin.OFFICIAL)
                 && !sameNumbers(priorOfficialW, priorOfficialR, request.getWhiteNumbers(), request.getRedNumbers());
 
-        // If there is already an OFFICIAL draw and the user enters different numbers, this becomes MANUAL
-        // and we snapshot both sides into DrawConflict.
         if (differsFromPriorOfficial) {
             draw.setOrigin(DrawOrigin.MANUAL);
             draw.getPicks().clear();
@@ -239,7 +295,6 @@ public class DrawService {
         } else if (priorOrigin == DrawOrigin.OFFICIAL) {
             // Manual numbers match official: keep OFFICIAL active and do not overwrite picks.
         } else {
-            // New draw or existing MANUAL draw: replace picks (active = manual)
             draw.setOrigin(DrawOrigin.MANUAL);
             draw.getPicks().clear();
             addPicks(draw, request.getWhiteNumbers(), request.getRedNumbers());
@@ -247,8 +302,8 @@ public class DrawService {
 
         DrawResult saved = drawResultRepository.save(draw);
 
-        // If we already had OFFICIAL data for this date and it differs, create conflict snapshot.
-        // If we already had a conflict (because OFFICIAL arrived after MANUAL), keep it and update manual snapshot.
+        onDrawActiveForNumberBalls(mode, List.of(saved));
+
         createOrUpdateConflictIfOfficialDiffers(
                 mode,
                 saved,
@@ -259,7 +314,6 @@ public class DrawService {
                 request.getRedNumbers()
         );
 
-        // If this is the latest draw, update GameMode snapshot fields from manual request
         updateGameModeLatestSnapshotIfLatest(mode, saved, request);
 
         DrawBundleResponse bundle = DrawBundleResponse.builder()
@@ -269,6 +323,7 @@ public class DrawService {
 
         return ApiResponse.ok("Manual draw saved", bundle);
     }
+
 
     // -----------------------------
     // CONFLICTS
@@ -340,18 +395,18 @@ public class DrawService {
             draw.setOrigin(DrawOrigin.OFFICIAL);
             draw.getPicks().clear();
             addPicks(draw, officialW, officialR);
-            drawResultRepository.save(draw);
 
             DrawResult saved = drawResultRepository.save(draw);
 
-            onOfficialDrawActiveForNumberBalls(saved.getGameMode(), saved);
+            onDrawActiveForNumberBalls(saved.getGameMode(), List.of(saved));
 
-            // If this is latest, update GameMode latest winning snapshot from resolved official
             updateGameModeWinningSnapshotIfLatest(saved.getGameMode(), saved, officialW, officialR);
         } else {
-            // MANUAL remains active
             draw.setOrigin(DrawOrigin.MANUAL);
+
             DrawResult saved = drawResultRepository.save(draw);
+
+            onDrawActiveForNumberBalls(saved.getGameMode(), List.of(saved));
 
             updateGameModeWinningSnapshotIfLatest(saved.getGameMode(), saved, manualW, manualR);
         }
@@ -361,6 +416,7 @@ public class DrawService {
 
         return ApiResponse.ok("Conflict resolved", null);
     }
+
 
     // -----------------------------
     // ensure up-to-date
@@ -392,9 +448,20 @@ public class DrawService {
                 .limit(SAFE_BACKFILL_MAX_DATES)
                 .toList();
 
+        List<DrawResult> updatedDraws = new ArrayList<>();
+
         for (LocalDate d : missingDates) {
             IngestedDraw ingested = ingestionService.ingestDrawByDate(mode.getId(), stateCode, d);
-            saveOfficialFromIngestion(mode, ingested);
+
+            DrawResult saved = saveOfficialFromIngestion(mode, ingested);
+
+            if (saved != null && saved.getOrigin() == DrawOrigin.OFFICIAL) {
+                updatedDraws.add(saved);
+            }
+        }
+
+        if (!updatedDraws.isEmpty()) {
+            onDrawActiveForNumberBalls(mode, updatedDraws);
         }
 
         // after ingest, recompute status
@@ -445,8 +512,6 @@ public class DrawService {
         boolean isNewOfficialDraw = (draw.getId() == null);
 
         DrawResult saved = drawResultRepository.save(draw);
-
-        onOfficialDrawActiveForNumberBalls(mode, saved);
 
         // update GameMode snapshot if newest
         updateGameModeLatestSnapshotIfLatest(mode, saved, ingested);
@@ -622,8 +687,12 @@ public class DrawService {
         return value == null ? null : BigDecimal.valueOf(value);
     }
 
-    private void onOfficialDrawActiveForNumberBalls(GameMode gameMode, DrawResult officialDraw) {
-        // TODO: numberBallLifecycleService.applyOfficialDraw(gameMode.getId(), officialDraw.getDrawDate(), picks...)
+    private void onDrawActiveForNumberBalls(GameMode mode, List<DrawResult> draws) {
+        if (draws == null || draws.isEmpty()) return;
+
+        List<NumberBall> balls = numberBallService.getBallsByGameModeId(mode.getId());
+        numberBallLifecycleService.applydraw(mode, draws, balls);
+        numberBallService.saveAll(balls);
     }
 
     private LocalDate computeLatestExpectedDrawDate(GameMode mode) {
@@ -840,4 +909,6 @@ public class DrawService {
                 .status(m.getStatus())
                 .build();
     }
+
+
 }

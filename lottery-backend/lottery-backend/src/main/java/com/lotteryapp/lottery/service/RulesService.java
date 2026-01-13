@@ -2,6 +2,7 @@ package com.lotteryapp.lottery.service;
 
 import com.lotteryapp.common.exception.BadRequestException;
 import com.lotteryapp.common.exception.NotFoundException;
+import com.lotteryapp.lottery.application.numbers.NumberBallLifecycleService;
 import com.lotteryapp.lottery.domain.gamemode.GameMode;
 import com.lotteryapp.lottery.domain.gamemode.GameScope;
 import com.lotteryapp.lottery.domain.gamemode.Rules;
@@ -26,15 +27,21 @@ public class RulesService {
     private final GameModeRepository gameModeRepository;
     private final RulesRepository rulesRepository;
     private final IngestionService ingestionService;
+    private final NumberBallLifecycleService numberBallLifecycleService;
+    private final DrawService drawService;
 
     public RulesService(
             GameModeRepository gameModeRepository,
             RulesRepository rulesRepository,
-            IngestionService ingestionService
+            IngestionService ingestionService,
+            NumberBallLifecycleService numberBallLifecycleService,
+            DrawService drawService
     ) {
         this.gameModeRepository = gameModeRepository;
         this.rulesRepository = rulesRepository;
         this.ingestionService = ingestionService;
+        this.numberBallLifecycleService = numberBallLifecycleService;
+        this.drawService = drawService;
     }
 
     @Transactional
@@ -74,7 +81,7 @@ public class RulesService {
         if (formatStartDateChanged(null, newRules.getFormatStartDate())) {
             meta.put("rebuildRequired", true);
             meta.put("rebuildReason", "formatStartDate changed");
-            triggerRebuild(mode.getId());
+            triggerRebuild(mode);
         }
 
         return ApiResponse.ok(message, toResponse(mode, newRules), null, meta);
@@ -134,7 +141,7 @@ public class RulesService {
         if (formatStartDateChanged(oldStart, newStart)) {
             meta.put("rebuildRequired", true);
             meta.put("rebuildReason", "formatStartDate changed");
-            triggerRebuild(mode.getId());
+            triggerRebuild(mode);
         }
 
         return ApiResponse.ok(message, toResponse(mode, existing), null, meta);
@@ -398,8 +405,8 @@ public class RulesService {
                 .build();
     }
 
-    private void triggerRebuild(Long gameModeId) {
-        // TODO (Category 4/5): this will clear + rebuild draws/numberballs based on the new formatStartDate.
-        // Intentionally a no-op for now so Rules category compiles cleanly.
+    private void triggerRebuild(GameMode mode) {
+        numberBallLifecycleService.rebuildForGameMode(mode);
+        drawService.syncCurrentFormatHistoryForRebuild(mode);
     }
 }

@@ -1,4 +1,4 @@
-package com.lotteryapp.lottery.dto.numberball.request;
+package com.lotteryapp.lottery.dto.tier.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetNumberBallsRequest {
+public class GetTierMatrixRequest {
     private Long gameModeId;
 }

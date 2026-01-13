@@ -1,6 +1,7 @@
 package com.lotteryapp.lottery.domain.numbers.tier;
 
 import com.lotteryapp.lottery.domain.numbers.NumberBall;
+import com.lotteryapp.lottery.domain.numbers.PoolType;
 import com.lotteryapp.lottery.domain.numbers.StatusChange;
 import com.lotteryapp.lottery.domain.numbers.Tier;
 
@@ -14,20 +15,45 @@ public final class NumberBallTierEngine {
     private NumberBallTierEngine() {}
 
     /**
-     * Assigns tiers based on tierCount (descending) with a recency tie-break using lastDrawnDate (descending).
+     * Assigns tiers for BOTH pools.
+     *
+     * Behavior:
+     * - Splits the provided list by PoolType (WHITE/RED)
+     * - Runs the tiering algorithm independently per pool
+     *
+     * Notes:
+     * - Callers should pass ALL game balls (white + red together).
+     * - If a ball has null PoolType (should not happen), it will be tiered as its own group.
+     */
+    public static void assignTiers(List<NumberBall> balls, TierCutoffs cutoffs) {
+        if (balls == null || balls.isEmpty()) return;
+
+        Map<PoolType, List<NumberBall>> byPool = balls.stream()
+                .collect(Collectors.groupingBy(NumberBall::getPoolType));
+
+        for (Map.Entry<PoolType, List<NumberBall>> entry : byPool.entrySet()) {
+            List<NumberBall> poolBalls = entry.getValue();
+            if (poolBalls == null || poolBalls.isEmpty()) continue;
+            assignTiersForSinglePool(poolBalls, cutoffs);
+        }
+    }
+
+    /**
+     * Assigns tiers based on tierCount (descending) with a recency tie-break using lastDrawnDate (descending),
+     * for ONE pool only.
      *
      * Rules:
      * - Every ball gets a tier.
      * - Bucket sizes derived from cutoffs (hotPct, midPct). Remainder is cold.
      * - Tie handling at bucket boundaries:
      *    If cutoff splits a tied tierCount group, keep the most recently drawn balls in the higher tier.
-     * - Edge case: if Hot+Mid end up empty (or all tierCount==0), everything becomes COLD (acts like quick-pick).
+     * - Edge case: if all tierCount==0, everything becomes COLD (acts like quick-pick).
      *
      * Updates:
      * - ball.tier
      * - ball.statusChange (PROMOTED/DEMOTED/NONE) based on previous tier.
      */
-    public static void assignTiers(List<NumberBall> balls, TierCutoffs cutoffs) {
+    private static void assignTiersForSinglePool(List<NumberBall> balls, TierCutoffs cutoffs) {
         if (balls == null || balls.isEmpty()) return;
 
         // Sort: tierCount desc, lastDrawnDate desc (nulls last), numberValue asc (stable)
@@ -38,7 +64,7 @@ public final class NumberBallTierEngine {
                 .thenComparingInt(NumberBallTierEngine::safeNumberValue)
         );
 
-        // If all tierCount are 0 -> everyone cold (your edge case)
+        // If all tierCount are 0 -> everyone cold (pool-local edge case)
         boolean allZero = sorted.stream().allMatch(b -> safeTierCount(b) == 0);
         if (allZero) {
             setAll(sorted, Tier.COLD);
@@ -80,8 +106,11 @@ public final class NumberBallTierEngine {
      * Picks the first targetCount, but if the boundary splits a tied group (same score),
      * keep the most recent in the higher tier.
      */
-    private static Set<NumberBall> pickTopWithTieSafety(List<NumberBall> sorted, int targetCount,
-                                                        Function<NumberBall, Integer> scoreFn) {
+    private static Set<NumberBall> pickTopWithTieSafety(
+            List<NumberBall> sorted,
+            int targetCount,
+            Function<NumberBall, Integer> scoreFn
+    ) {
         if (targetCount <= 0 || sorted.isEmpty()) return Collections.emptySet();
         if (targetCount >= sorted.size()) return new LinkedHashSet<>(sorted);
 
@@ -97,7 +126,7 @@ public final class NumberBallTierEngine {
                 .collect(Collectors.toList());
 
         // If boundary score is unique (only appears inside top, no split) -> ok
-        boolean split = tied.stream().anyMatch(b -> !top.contains(b)) && top.stream().anyMatch(b -> tied.contains(b));
+        boolean split = tied.stream().anyMatch(b -> !top.contains(b)) && top.stream().anyMatch(tied::contains);
         if (!split) {
             return new LinkedHashSet<>(top);
         }

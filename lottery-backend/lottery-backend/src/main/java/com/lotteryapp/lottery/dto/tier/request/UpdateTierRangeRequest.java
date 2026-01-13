@@ -1,17 +1,17 @@
 package com.lotteryapp.lottery.dto.tier.request;
 
-
-import com.lotteryapp.lottery.domain.numbers.PoolType;
-import com.lotteryapp.lottery.domain.numbers.Tier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetTierListRequest {
+public class UpdateTierRangeRequest {
     private Long gameModeId;
-    private PoolType poolType;
-    private Tier tier;
+
+    private LocalDate tierRangeStartDate;
+    private LocalDate tierRangeEndDate;
 }
