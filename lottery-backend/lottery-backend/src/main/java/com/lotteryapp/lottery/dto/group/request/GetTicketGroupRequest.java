@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DeleteTicketGroupRequest {
+public class GetTicketGroupRequest {
 
     @NotNull
     private Long groupId;
