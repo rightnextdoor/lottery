@@ -1,4 +1,7 @@
 package com.lotteryapp.lottery.dto.batch.request;
 
-public class GetBatchDetailRequest {
-}
+import jakarta.validation.constraints.NotNull;
+
+public record GetBatchDetailRequest(
+        @NotNull Long batchId
+) {}

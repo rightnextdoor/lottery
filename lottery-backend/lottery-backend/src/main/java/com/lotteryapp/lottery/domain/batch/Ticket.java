@@ -1,5 +1,6 @@
 package com.lotteryapp.lottery.domain.batch;
 
+import com.lotteryapp.lottery.domain.group.TicketGroup;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,10 +11,20 @@ import java.util.List;
 @Table(
         name = "ticket",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_ticket_batch_index", columnNames = {"saved_batch_id", "ticket_index"})
+                @UniqueConstraint(
+                        name = "uk_ticket_batch_spec_ticketnum",
+                        columnNames = {"saved_batch_id", "spec_number", "ticket_number"}
+                )
+        },
+        indexes = {
+                @Index(name = "ix_ticket_batch", columnList = "saved_batch_id"),
+                @Index(name = "ix_ticket_batch_spec", columnList = "saved_batch_id,spec_number"),
+                @Index(name = "ix_ticket_white_group", columnList = "white_group_id"),
+                @Index(name = "ix_ticket_red_group", columnList = "red_group_id")
         }
 )
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,12 +38,23 @@ public class Ticket {
     @JoinColumn(name = "saved_batch_id", nullable = false)
     private SavedBatch savedBatch;
 
+    @Column(name = "spec_number", nullable = false)
+    private Integer specNumber;
 
-    @Column(name = "ticket_index", nullable = false)
-    private Integer ticketIndex;
+    @Column(name = "ticket_number", nullable = false)
+    private Integer ticketNumber;
 
-    @Column(name = "strategy_group", length = 20)
-    private String strategyGroup;
+    @Column(name = "exclude_last_draw_numbers", nullable = false)
+    @Builder.Default
+    private Boolean excludeLastDrawNumbers = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "white_group_id")
+    private TicketGroup whiteGroup;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "red_group_id")
+    private TicketGroup redGroup;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("poolType ASC, position ASC")

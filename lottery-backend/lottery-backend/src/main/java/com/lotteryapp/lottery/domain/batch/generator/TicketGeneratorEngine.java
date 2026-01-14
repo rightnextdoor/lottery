@@ -13,95 +13,116 @@ import java.util.stream.Collectors;
 public class TicketGeneratorEngine {
 
     /**
-     * Main entrypoint.
+     * Generate preview-only tickets grouped by specResults.
+     * No DB ids are produced here.
      */
-    public GeneratedBatch generate(GeneratorRequest req) {
-        Objects.requireNonNull(req, "req");
+    public GeneratedBatch generate(GeneratorContext ctx, List<GeneratorSpec> specs) {
+        Objects.requireNonNull(ctx, "ctx");
+        if (specs == null || specs.isEmpty()) throw new IllegalArgumentException("specs is required");
 
-        Random rng = (req.options().randomSeed() == null)
+        Random rng = (ctx.options().randomSeed() == null)
                 ? new Random()
-                : new Random(req.options().randomSeed());
+                : new Random(ctx.options().randomSeed());
 
         GeneratedBatch out = new GeneratedBatch();
 
-        // Used counts across the entire batch per pool (anti-dominance)
-        Map<PoolType, Map<Integer, Integer>> usedCounts = new EnumMap<>(PoolType.class);
-        usedCounts.put(PoolType.WHITE, new HashMap<>());
-        usedCounts.put(PoolType.RED, new HashMap<>());
+        for (int s = 0; s < specs.size(); s++) {
+            int specNumber = s + 1;
+            GeneratorSpec spec = specs.get(s);
 
-        for (int i = 0; i < req.ticketCount(); i++) {
-            List<Integer> whites = generatePool(req, PoolType.WHITE, rng, usedCounts, out);
-            List<Integer> reds = generatePool(req, PoolType.RED, rng, usedCounts, out);
+            GeneratedSpecResult specOut = new GeneratedSpecResult(
+                    specNumber,
+                    spec.ticketCount(),
+                    spec.whiteGroupId(),
+                    spec.redGroupId(),
+                    spec.excludeLastDrawNumbers()
+            );
 
-            out.addTicket(new GeneratedTicket(
-                    i,
-                    whites,
-                    reds,
-                    req.whiteGroup() == null ? null : req.whiteGroup().getGroupKey(),
-                    req.redGroup() == null ? null : req.redGroup().getGroupKey()
-            ));
+            // usedCounts resets PER SPEC (anti-dominance per spec)
+            Map<PoolType, Map<Integer, Integer>> usedCounts = new EnumMap<>(PoolType.class);
+            usedCounts.put(PoolType.WHITE, new HashMap<>());
+            usedCounts.put(PoolType.RED, new HashMap<>());
+
+            for (int t = 1; t <= spec.ticketCount(); t++) {
+                List<Integer> whites = generatePool(ctx, spec, PoolType.WHITE, rng, usedCounts, specOut);
+                List<Integer> reds = generatePool(ctx, spec, PoolType.RED, rng, usedCounts, specOut);
+
+                specOut.addTicket(new GeneratedSpecTicket(
+                        t,
+                        new GeneratedPicks(whites, reds)
+                ));
+            }
+
+            // Promote spec warnings to batch warnings (helps UI show “something happened”)
+            if (!specOut.getWarnings().isEmpty()) {
+                out.warn("Spec " + specNumber + ": one or more pools relaxed exclusions or fell back to quick pick.");
+            }
+
+            out.addSpecResult(specOut);
         }
 
         return out;
     }
 
     private List<Integer> generatePool(
-            GeneratorRequest req,
+            GeneratorContext ctx,
+            GeneratorSpec spec,
             PoolType poolType,
             Random rng,
             Map<PoolType, Map<Integer, Integer>> usedCounts,
-            GeneratedBatch out
+            GeneratedSpecResult specOut
     ) {
-        Rules rules = req.rules();
+        Rules rules = ctx.rules();
 
         int min = (poolType == PoolType.WHITE) ? rules.getWhiteMin() : safeInt(rules.getRedMin());
         int max = (poolType == PoolType.WHITE) ? rules.getWhiteMax() : safeInt(rules.getRedMax());
         int pickCount = (poolType == PoolType.WHITE) ? rules.getWhitePickCount() : safeInt(rules.getRedPickCount());
 
-        if (pickCount <= 0) return List.of(); // no RED pool, etc.
+        if (pickCount <= 0) return List.of();
 
         boolean ordered = (poolType == PoolType.WHITE) ? bool(rules.getWhiteOrdered()) : bool(rules.getRedOrdered());
         boolean allowRepeats = (poolType == PoolType.WHITE) ? bool(rules.getWhiteAllowRepeats()) : bool(rules.getRedAllowRepeats());
 
-        Set<Integer> excluded = req.excludedFor(poolType);
+        Set<Integer> excluded = spec.excludedFor(poolType);
 
-        if (req.mode() == GeneratorMode.QUICK_PICK) {
-            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, out, poolType);
-        }
-
-        // GROUP_WEIGHTED
-        TicketGroup group = req.groupFor(poolType);
-        List<NumberBall> balls = req.ballsFor(poolType);
-
-        // If tier data isn't present or Hot+Mid empty, treat as quick pick for this pool
-        TierBuckets buckets = TierBuckets.fromNumberBalls(balls, excluded);
-        if (buckets.hot.isEmpty() && buckets.mid.isEmpty()) {
-            out.warn(poolType + ": Hot+Mid empty; treating pool as quick pick (all cold).");
-            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, out, poolType);
-        }
-
-        // If no group specified for this pool, also fall back to quick pick
+        // Decide per pool:
+        // - if group missing => quick pick
+        // - if group present => weighted for this pool
+        TicketGroup group = spec.groupFor(poolType);
         if (group == null) {
-            out.warn(poolType + ": No group provided; falling back to quick pick for this pool.");
-            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, out, poolType);
+            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, specOut, poolType);
         }
 
         if (group.getPoolType() != poolType) {
-            out.warn(poolType + ": Group poolType mismatch; falling back to quick pick for this pool.");
-            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, out, poolType);
+            specOut.warn(poolType + ": group poolType mismatch; falling back to quick pick for this pool.");
+            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, specOut, poolType);
+        }
+
+        List<NumberBall> balls = (poolType == PoolType.WHITE) ? ctx.whiteBalls() : ctx.redBalls();
+        if (balls == null) {
+            specOut.warn(poolType + ": tier list missing; falling back to quick pick for this pool.");
+            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, specOut, poolType);
+        }
+
+        TierBuckets buckets = TierBuckets.fromNumberBalls(balls, excluded);
+
+        // If Hot+Mid empty, treat as quick pick for this pool
+        if (buckets.hot.isEmpty() && buckets.mid.isEmpty()) {
+            specOut.warn(poolType + ": Hot+Mid empty; treating pool as quick pick (all cold).");
+            return quickPick(min, max, pickCount, allowRepeats, ordered, excluded, rng, specOut, poolType);
         }
 
         if (group.getGroupMode() == GroupMode.COUNT) {
             return groupWeightedCount(
                     poolType, pickCount, allowRepeats, ordered,
-                    group, buckets, rng, usedCounts.get(poolType), req.options(), out
-            );
-        } else {
-            return groupWeightedPercent(
-                    poolType, pickCount, allowRepeats, ordered,
-                    group, buckets, rng, usedCounts.get(poolType), req.options(), out
+                    group, buckets, rng, usedCounts.get(poolType), ctx.options(), specOut
             );
         }
+
+        return groupWeightedPercent(
+                poolType, pickCount, allowRepeats, ordered,
+                group, buckets, rng, usedCounts.get(poolType), ctx.options(), specOut
+        );
     }
 
     // -------------------------
@@ -116,7 +137,7 @@ public class TicketGeneratorEngine {
             boolean ordered,
             Set<Integer> excluded,
             Random rng,
-            GeneratedBatch out,
+            GeneratedSpecResult specOut,
             PoolType poolType
     ) {
         List<Integer> candidates = new ArrayList<>();
@@ -125,14 +146,13 @@ public class TicketGeneratorEngine {
         }
 
         if (!allowRepeats && candidates.size() < pickCount) {
-            out.warn(poolType + ": exclusions made quick pick impossible; relaxing exclusions for this pool.");
+            specOut.warn(poolType + ": exclusions made quick pick impossible; relaxing exclusions for this pool.");
             candidates.clear();
             for (int v = min; v <= max; v++) candidates.add(v);
         }
 
         if (candidates.isEmpty()) {
-            // Repeats allowed but exclusions removed everything — relax
-            out.warn(poolType + ": no candidates available; relaxing exclusions for this pool.");
+            specOut.warn(poolType + ": no candidates available; relaxing exclusions for this pool.");
             for (int v = min; v <= max; v++) candidates.add(v);
         }
 
@@ -143,12 +163,13 @@ public class TicketGeneratorEngine {
                 picks.add(candidates.get(rng.nextInt(candidates.size())));
             }
         } else {
-            // sample without replacement uniformly
             Collections.shuffle(candidates, rng);
             picks.addAll(candidates.subList(0, pickCount));
         }
 
-        if (!ordered) {
+        // Sorting rule:
+        // ordered=true => sort ascending
+        if (ordered) {
             Collections.sort(picks);
         }
 
@@ -169,40 +190,34 @@ public class TicketGeneratorEngine {
             Random rng,
             Map<Integer, Integer> usedCount,
             GeneratorOptions options,
-            GeneratedBatch out
+            GeneratedSpecResult specOut
     ) {
-        Integer hotN = safeNullable(group.getHotCount());
-        Integer midN = safeNullable(group.getMidCount());
-        Integer coldN = safeNullable(group.getColdCount());
+        int hotN = safeNullable(group.getHotCount());
+        int midN = safeNullable(group.getMidCount());
+        int coldN = safeNullable(group.getColdCount());
 
         if (hotN + midN + coldN != pickCount) {
-            out.warn(poolType + ": COUNT group does not match pickCount; attempting tier fall-down fill.");
+            specOut.warn(poolType + ": COUNT group does not match pickCount; attempting tier fall-down fill.");
         }
 
         List<Integer> picks = new ArrayList<>(pickCount);
 
-        // pick from each tier with fall-down
-        pickFromTierWithFallback(poolType, Tier.HOT, hotN, allowRepeats, picks, buckets, rng, usedCount, options, out);
-        pickFromTierWithFallback(poolType, Tier.MID, midN, allowRepeats, picks, buckets, rng, usedCount, options, out);
-        pickFromTierWithFallback(poolType, Tier.COLD, coldN, allowRepeats, picks, buckets, rng, usedCount, options, out);
+        pickFromTierWithFallback(poolType, Tier.HOT, hotN, allowRepeats, picks, buckets, rng, usedCount, options, specOut);
+        pickFromTierWithFallback(poolType, Tier.MID, midN, allowRepeats, picks, buckets, rng, usedCount, options, specOut);
+        pickFromTierWithFallback(poolType, Tier.COLD, coldN, allowRepeats, picks, buckets, rng, usedCount, options, specOut);
 
-        // If still short, fill remaining using tier fall-down from HOT->MID->COLD
         while (picks.size() < pickCount) {
             boolean ok = pickOneWeighted(poolType, allowRepeats, picks, buckets.hot, rng, usedCount, options)
                     || pickOneWeighted(poolType, allowRepeats, picks, buckets.mid, rng, usedCount, options)
                     || pickOneWeighted(poolType, allowRepeats, picks, buckets.cold, rng, usedCount, options);
 
             if (!ok) {
-                // As absolute fallback, stop (should not happen unless buckets empty)
-                out.warn(poolType + ": unable to fill remaining picks; bucket candidates empty.");
+                specOut.warn(poolType + ": unable to fill remaining picks; bucket candidates empty.");
                 break;
             }
         }
 
-        if (!ordered) {
-            Collections.sort(picks);
-        }
-
+        if (ordered) Collections.sort(picks);
         return picks;
     }
 
@@ -216,7 +231,7 @@ public class TicketGeneratorEngine {
             Random rng,
             Map<Integer, Integer> usedCount,
             GeneratorOptions options,
-            GeneratedBatch out
+            GeneratedSpecResult specOut
     ) {
         for (int i = 0; i < count; i++) {
             boolean ok = switch (tier) {
@@ -227,7 +242,6 @@ public class TicketGeneratorEngine {
 
             if (ok) continue;
 
-            // fall-down tier
             boolean fallbackOk = switch (tier) {
                 case HOT -> pickOneWeighted(poolType, allowRepeats, picks, buckets.mid, rng, usedCount, options)
                         || pickOneWeighted(poolType, allowRepeats, picks, buckets.cold, rng, usedCount, options);
@@ -236,7 +250,7 @@ public class TicketGeneratorEngine {
             };
 
             if (!fallbackOk) {
-                out.warn(poolType + ": tier " + tier + " empty after exclusions; unable to fill requested count.");
+                specOut.warn(poolType + ": tier " + tier + " empty after exclusions; unable to fill requested count.");
                 return;
             }
         }
@@ -256,21 +270,19 @@ public class TicketGeneratorEngine {
             Random rng,
             Map<Integer, Integer> usedCount,
             GeneratorOptions options,
-            GeneratedBatch out
+            GeneratedSpecResult specOut
     ) {
         int hotPct = clampPct(group.getHotPct());
         int midPct = clampPct(group.getMidPct());
         int coldPct = clampPct(group.getColdPct());
 
         if (hotPct + midPct + coldPct != 100) {
-            out.warn(poolType + ": PERCENT group does not sum to 100; renormalizing.");
+            specOut.warn(poolType + ": PERCENT group does not sum to 100; renormalizing.");
             int sum = hotPct + midPct + coldPct;
             if (sum <= 0) {
-                // all zero => treat as all cold (quick pick behavior)
-                out.warn(poolType + ": all percentages are 0; treating pool as quick pick (all cold).");
-                return quickPickFallbackFromBuckets(poolType, pickCount, allowRepeats, ordered, buckets, rng, out);
+                specOut.warn(poolType + ": all percentages are 0; treating pool as quick pick (all cold).");
+                return quickPickFallbackFromBuckets(poolType, pickCount, allowRepeats, ordered, buckets, rng, specOut);
             }
-            // simple renormalize
             hotPct = (int) Math.round(hotPct * 100.0 / sum);
             midPct = (int) Math.round(midPct * 100.0 / sum);
             coldPct = 100 - hotPct - midPct;
@@ -281,7 +293,6 @@ public class TicketGeneratorEngine {
         for (int i = 0; i < pickCount; i++) {
             Tier chosen = rollTier(hotPct, midPct, rng);
 
-            // fall-down if chosen bucket empty
             boolean ok = switch (chosen) {
                 case HOT -> pickOneWeighted(poolType, allowRepeats, picks, buckets.hot, rng, usedCount, options)
                         || pickOneWeighted(poolType, allowRepeats, picks, buckets.mid, rng, usedCount, options)
@@ -292,20 +303,17 @@ public class TicketGeneratorEngine {
             };
 
             if (!ok) {
-                out.warn(poolType + ": no candidates available while picking by percent; treating pool as quick pick.");
-                return quickPickFallbackFromBuckets(poolType, pickCount, allowRepeats, ordered, buckets, rng, out);
+                specOut.warn(poolType + ": no candidates available while picking by percent; treating pool as quick pick.");
+                return quickPickFallbackFromBuckets(poolType, pickCount, allowRepeats, ordered, buckets, rng, specOut);
             }
         }
 
-        if (!ordered) {
-            Collections.sort(picks);
-        }
-
+        if (ordered) Collections.sort(picks);
         return picks;
     }
 
     private Tier rollTier(int hotPct, int midPct, Random rng) {
-        int r = rng.nextInt(100); // 0..99
+        int r = rng.nextInt(100);
         if (r < hotPct) return Tier.HOT;
         if (r < hotPct + midPct) return Tier.MID;
         return Tier.COLD;
@@ -326,7 +334,6 @@ public class TicketGeneratorEngine {
     ) {
         if (candidates == null || candidates.isEmpty()) return false;
 
-        // If no repeats within ticket, remove already-picked values from consideration
         List<NumberBall> usable = candidates;
         if (!allowRepeats) {
             Set<Integer> already = new HashSet<>(currentPicks);
@@ -351,19 +358,10 @@ public class TicketGeneratorEngine {
         int value = usable.get(idx).getNumberValue();
         currentPicks.add(value);
 
-        // update per-batch usage
         usedCount.put(value, usedCount.getOrDefault(value, 0) + 1);
-
         return true;
     }
 
-    /**
-     * Default baseWeight:
-     * - Always >0
-     * - Uses tierCount and tier as a multiplier
-     *
-     * You can tune this later without changing generator structure.
-     */
     private double baseWeight(NumberBall b) {
         int tierCount = (b.getTierCount() == null) ? 0 : b.getTierCount();
         double base = 1.0 + tierCount;
@@ -381,7 +379,7 @@ public class TicketGeneratorEngine {
             boolean ordered,
             TierBuckets buckets,
             Random rng,
-            GeneratedBatch out
+            GeneratedSpecResult specOut
     ) {
         List<Integer> all = new ArrayList<>();
         buckets.hot.forEach(b -> all.add(b.getNumberValue()));
@@ -389,7 +387,7 @@ public class TicketGeneratorEngine {
         buckets.cold.forEach(b -> all.add(b.getNumberValue()));
 
         if (!allowRepeats && all.size() < pickCount) {
-            out.warn(poolType + ": not enough candidates even after fallback; cannot satisfy pickCount.");
+            specOut.warn(poolType + ": not enough candidates even after fallback; cannot satisfy pickCount.");
             return List.of();
         }
 
@@ -404,7 +402,7 @@ public class TicketGeneratorEngine {
             picks.addAll(all.subList(0, pickCount));
         }
 
-        if (!ordered) Collections.sort(picks);
+        if (ordered) Collections.sort(picks);
         return picks;
     }
 
@@ -442,13 +440,8 @@ public class TicketGeneratorEngine {
         }
     }
 
-    // -------------------------
-    // tiny utils
-    // -------------------------
-
     private int safeInt(Integer v) { return v == null ? 0 : v; }
     private boolean bool(Boolean v) { return v != null && v; }
-
     private int safeNullable(Integer v) { return v == null ? 0 : v; }
 
     private int clampPct(Integer v) {

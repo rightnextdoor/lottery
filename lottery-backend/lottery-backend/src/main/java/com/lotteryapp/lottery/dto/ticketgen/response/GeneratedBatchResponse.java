@@ -1,4 +1,8 @@
 package com.lotteryapp.lottery.dto.ticketgen.response;
 
-public class GeneratedBatchResponse {
-}
+import java.util.List;
+
+public record GeneratedBatchResponse(
+        List<GeneratedSpecResultResponse> specResults,
+        List<String> warnings
+) {}

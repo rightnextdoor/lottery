@@ -5,19 +5,19 @@ import java.util.List;
 
 public class GeneratedBatch {
 
-    private final List<GeneratedTicket> tickets = new ArrayList<>();
+    private final List<GeneratedSpecResult> specResults = new ArrayList<>();
     private final List<String> warnings = new ArrayList<>();
 
-    public List<GeneratedTicket> getTickets() {
-        return tickets;
+    public List<GeneratedSpecResult> getSpecResults() {
+        return specResults;
     }
 
     public List<String> getWarnings() {
         return warnings;
     }
 
-    public void addTicket(GeneratedTicket ticket) {
-        tickets.add(ticket);
+    public void addSpecResult(GeneratedSpecResult specResult) {
+        specResults.add(specResult);
     }
 
     public void warn(String message) {

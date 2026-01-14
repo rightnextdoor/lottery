@@ -2,9 +2,7 @@ package com.lotteryapp.lottery.dto.batch.request;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-
-public record BatchCheckRequest(
+public record UpdateKeepForeverRequest(
         @NotNull Long batchId,
-        LocalDate drawDate
+        @NotNull Boolean keepForever
 ) {}

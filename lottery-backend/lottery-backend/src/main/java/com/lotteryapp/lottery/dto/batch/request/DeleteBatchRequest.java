@@ -1,4 +1,7 @@
 package com.lotteryapp.lottery.dto.batch.request;
 
-public class DeleteBatchRequest {
-}
+import jakarta.validation.constraints.NotNull;
+
+public record DeleteBatchRequest(
+        @NotNull Long batchId
+) {}

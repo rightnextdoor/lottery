@@ -159,6 +159,28 @@ public class DrawService {
         return ApiResponse.ok("Current format draws loaded", bundle);
     }
 
+    @Transactional
+    public DrawResponse getWinningNumbersForCheck(Long gameModeId, String stateCode, LocalDate drawDate) {
+        if (gameModeId == null) throw new BadRequestException("gameModeId is required");
+        if (stateCode == null || stateCode.isBlank()) throw new BadRequestException("stateCode is required");
+
+        GameMode mode = requireMode(gameModeId);
+        ensureDrawsUpToDate(mode, stateCode);
+
+        DrawResult draw;
+        if (drawDate == null) {
+            draw = drawResultRepository.findTopByGameModeIdOrderByDrawDateDesc(mode.getId())
+                    .orElseGet(() -> saveOfficialFromIngestion(mode, ingestionService.ingestLatestDraw(mode.getId(), stateCode)));
+        } else {
+            draw = drawResultRepository.findByGameModeIdAndDrawDate(mode.getId(), drawDate)
+                    .orElseGet(() -> saveOfficialFromIngestion(mode,
+                            ingestionService.ingestDrawByDate(mode.getId(), stateCode, drawDate)
+                    ));
+        }
+
+        return toDrawResponse(draw);
+    }
+
 
     public void syncCurrentFormatHistoryForRebuild(GameMode mode) {
         if (mode == null || mode.getId() == null) {
